@@ -13,9 +13,8 @@
     fprintf("\n     *    David Egea Hernández");
     fprintf("\n\n---------------------------------------------------------------------------");
 
-%% 2. Demodulador de un símbolo
 
-%% Ejercicio 2.1 
+%% 2. Demodulador de un símbolo - Ejercicio 2.1 
 
 % a. Representación temporal del vector de salida de ambos correladores para 
 % los dos posibles símbolos recibidos (i.e. s1 y s2). Es decir, los valores 
@@ -70,7 +69,7 @@ ylim([-1 1])
 title("y2(t) salida del correlador 2 ");
 
 
-%% Ejercicio 2.2
+%% 2. Demodulador de un símbolo - Ejercicio 2.2
 
 clear; close all;
 
@@ -102,7 +101,7 @@ hold on;
 plot(t,s1_noise_5dB,"r");
 xlabel("t (ms)");   
 title("Comparativa señal con y sin ruido");
-legend("s1(t)","s1_noise(t)(SNR=10dB)")
+legend("s1(t)","s1_noise(t)(SNR=5dB)")
 
 % Representación de los resultados con ruido
 figure;
@@ -110,7 +109,7 @@ subplot(3,1,1);
 plot(t,s1_noise_5dB);
 xlabel("t (ms)");   
 ylim([-2 2])
-title("señal de entrada s1(t) con ruido");
+title("señal de entrada s1(t) con ruido (SNR=5dB)");
 subplot(3,1,2);
 plot(t,y1_s1_10*phi1,"r*-");
 ylim([-2 2])
@@ -120,4 +119,70 @@ plot(t,y2_s1_10*phi2,"g-o");
 xlabel("t (ms)");
 ylim([-2 2])
 title("y2(t) salida del correlador 2 ");
-%%
+
+%% 3. Salida del demodulador  - Ejercicio 3.1
+
+clear; close all;
+
+% Parametros
+T = 10;
+Ts = T/20;
+M = T/Ts; % Numero de muestras por simbolo
+Nsymb = 10000;
+SNR = 10;
+
+% Se genera el vector de tiempo
+t = linspace(0,T,T/Ts);
+
+% Primera señal
+s1 = ones(1,length(t));
+s2 = [ones(1,length(t)/2) -ones(1,length(t)/2)];
+
+% Generamos la señal r(t) de simbolos s1(t) y s2(t)
+r.s1 = [];
+r.s2 = [];
+for i=1:Nsymb
+    r.s1 = [r.s1 s1];
+    r.s2 = [r.s2 s2];
+end
+
+% Añadir ruido blanco a la señal s1
+r.s1_noise = awgn(r.s1,SNR);
+% Añadir ruido blanco a la señal s2
+r.s2_noise = awgn(r.s2,SNR);
+
+% Llamada de forma iterativa a correlatorType
+r1.s1 = [];
+r2.s1 = [];
+r1.s2 = [];
+r2.s2 = [];
+for i=1:Nsymb
+    % Llamada a la función de correlación
+    [y1_s1,y2_s1] = correlatorType(T,Ts,r.s1_noise((i-1)*M+1:i*M));
+    r1.s1 = [r1.s1 y1_s1];
+    r2.s1 = [r2.s1 y2_s1];
+    % Llamada a la función de correlación
+    [y1_s2,y2_s2] = correlatorType(T,Ts,r.s2_noise((i-1)*M+1:i*M));
+    r1.s2 = [r1.s2 y1_s2];
+    r2.s2 = [r2.s2 y2_s2];
+end
+
+% Histograma
+figure;
+subplot(2,2,1);
+histogram(r1.s1);
+title("Histograma r1");
+xlabel("Valores r1 s1");
+subplot(2,2,2);
+histogram(r2.s1)
+title("Histograma r2")
+xlabel("Valores r2 s1")
+subplot(2,2,3);
+histogram(r1.s2);
+title("Histograma r1");
+xlabel("Valores r1 s2");
+subplot(2,2,4);
+histogram(r2.s2)
+title("Histograma r2 s2")
+xlabel("Valores r2")
+sgtitle("Histogramas r(t)");
