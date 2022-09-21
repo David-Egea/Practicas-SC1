@@ -15,7 +15,6 @@ Las señales `s1` y `s2` que utilizadas en esta práctica son las siguientes:
 !["Símbolos"](Practica1/../images/1_simbolos.jpg)
 
 ## 2. Demodulador de un símbol
----
 
 Esta parte se centra en el desarrollo e implementación del demodulador por correlación. 
 
@@ -65,7 +64,6 @@ De todas formas, aunque los coeficientes no salgan enteros, el detector aproxima
 
 
 ## 3. Salida del demodulador 
----
 
 En este caso seguiremos con el mismo nivel de 5dB SNR para el ruido blanco que añadimos. Este se debe a que es el minimo SNR que se permite sin que haya errores de transmisión.
 
