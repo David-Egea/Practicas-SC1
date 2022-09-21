@@ -1,15 +1,27 @@
----
-title: "Informe P1 - SC1"
-output: informe_p1_sc1
----
-
 # PRÁCTICA 1 - Demodulación Digital en Banda Base
 
-## 2. Demodulador de un símbolo
+Autores:
+* *David Cocero Quintanilla*  
+* *David Egea Hernández*
+
+
+---
+El objetivo de esta primera práctica es diferentes técnicas de demodulación de señales digitales estudiadas en teoría. Además se analizará el efecto de la presencia de ruido en el canal. 
+
+En nuestro caso, hemos optado por desarrollar un demodulador por correlación. 
+
+Las señales `s1` y `s2` que utilizadas en esta práctica son las siguientes:
+
+!["Símbolos"](Practica1/../images/1_simbolos.jpg)
+
+## 2. Demodulador de un símbol
 ---
 
-### Ejercicio 2.1
+Esta parte se centra en el desarrollo e implementación del demodulador por correlación. 
 
+
+### Ejercicio 2.1
+---
 Representación temporal del vector de salida de ambos correladores para los dos posibles símbolos recibidos (i.e. s1 y s2). Es decir, los valores de y_n (t) para n = 1,¿Son los resultados lógicos? Coméntelos. Quizá sea una buena idea utilizar la función subplot para presentar los resultados. Asegúrese de que todas las gráficas tienen los mismos ejes para facilitar la comparación.
    
 Vemos que para el simbolo s1 y1(t) vale 1 y y2(t) desde 0 hasta T/2. Desde T/2 hasta T, será lo contrario, con y1(t) valiendo 0 y y2(t) valiendo 1.
@@ -47,7 +59,7 @@ Abajo aparecen representadas las salidas de los 2 demoduladores para s1 (primera
 
 !["Salida demodulador"](Practica1/../images/2_2_salida_demodulador.jpg "Salida demodulador")
 
-Vemos que ahora el ruido hace que los coeficientes a la salida de los demoduladores no sean enteros. Para s1, y1 estará entorno a 1.5 mientras que y2 está más cercano al 1. Con s2 ocurrirá lo mismo
+Vemos que ahora el ruido hace que los coeficientes a la salida de los demoduladores no sean enteros. Para s1, y1 estará entorno a 1.3 mientras que y2 está sobre el 0.85. Con s2 ocurrirá lo mismo, aunque se desvían menos con y1 valiendo 0.88 y y2 -1.18.
 
 De todas formas, aunque los coeficientes no salgan enteros, el detector aproximará al simbolo más cercano por lo que la transmisión será correcta.
 
@@ -55,4 +67,12 @@ De todas formas, aunque los coeficientes no salgan enteros, el detector aproxima
 ## 3. Salida del demodulador 
 ---
 
+En este caso seguiremos con el mismo nivel de 5dB SNR para el ruido blanco que añadimos. Este se debe a que es el minimo SNR que se permite sin que haya errores de transmisión.
+
+Además elegiremos un valor de Nsymb de 1000 para poder representar bien los histogramas.
+
+Generamos los histogramas de la figura de abajo, con la salida de los demoduladores para s1 en la primera columna y para s2 en la segunda.
+
 !["Histogramas"](Practica1/../images/3_histogramas.jpg "Histogramas")
+
+Los cuatro histogramas parecen tener una distribución gausiana, con media en el valor real de los coeficientes: [1 1] para s1 y [1 -1] para s2. Estos resultados parecen correctos ya que el ruido blanco gaussiano tiene distribución gaussiana, así que a partir de un numero de muestras adecuado (1000 en nuestro caso), los histogramas tendrán una distribución similar.
