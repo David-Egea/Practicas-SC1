@@ -167,7 +167,7 @@ ylim([-2 2])
 title("y2(t) salida del correlador 2 ");
 sgtitle("Salidas demodulador (y1, y2) para señales s1 y s2");
 
-%% 3. Salida del demodulador  - Ejercicio 3.1
+%% 3. Salida del demodulador - Ejercicio 3.1
 
 clear; close all;
 
