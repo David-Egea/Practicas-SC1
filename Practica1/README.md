@@ -4,6 +4,7 @@ Autores:
 * *David Cocero Quintanilla*  
 * *David Egea Hernández*
 
+
 ---
 El objetivo de esta primera práctica es diferentes técnicas de demodulación de señales digitales estudiadas en teoría. Además se analizará el efecto de la presencia de ruido en el canal. 
 
