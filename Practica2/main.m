@@ -6,7 +6,7 @@
     fprintf("\n     *    22/09/2022");
     fprintf("\n     *    David Cocero Quintanilla");
     fprintf("\n     *    David Egea Hernández");
-    fprintf("\n\n---------------------------------------------------------------------------");
+    fprintf("\n\n---------------------------------------------------------------------------\n");
 
 %% 2. Modulador
 
@@ -32,4 +32,38 @@ phi2 = s2/(A*sqrt(T));
 % si se puede expresar como la combinación lineal tal que
 %   si(t) = ci1 * phi1(t) + ci2 * phi2(t)
 
-[c11, c12] = coefs(s1,phi1,phi2); % Coeficientes de s1
+c1 = coefs(s1,phi1,phi2); % Coeficientes de s1
+c2 = coefs(s2,phi1,phi2); % Coeficientes de s2
+c3 = coefs(s3,phi1,phi2); % Coeficientes de s3
+c4 = coefs(s4,phi1,phi2); % Coeficientes de s4
+
+% - Ejercicio 2.1 - 
+
+% Modulamos una señal de N simbolos
+N = 10; % Numero de simbolos
+[s,r] = modulador(c1,c2,c3,c4,N,phi1,phi2); 
+
+% Generamos un vector de tiempos para la nueva señal
+t = [0:Ts:T*N-Ts];
+
+% Representación de la señal generada
+figure;
+plot(t,s,'Linewidth',2);
+ylim([-1.1 1.1]);
+xlabel("t(ms)");
+title('Representación simbolos concatenados');
+subtitle("Vector de símbolos: " + strjoin(string(r)));
+grid on;
+
+%% 3. Demodulador
+
+% - Ejercicio 3.1 - 
+ 
+% Demodulación para obtener los coeficientes
+[y1, y2] = demodulador(s,phi1,phi2);
+
+%% 4. Detector
+
+% - Ejercicio 4.1 - 
+
+detector(y1, y2);
