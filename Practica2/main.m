@@ -33,3 +33,6 @@ phi2 = s2/(A*sqrt(T));
 %   si(t) = ci1 * phi1(t) + ci2 * phi2(t)
 
 [c11, c12] = coefs(s1,phi1,phi2); % Coeficientes de s1
+[c11, c12] = coefs(s2,phi1,phi2);
+[c11, c12] = coefs(s3,phi1,phi2);
+[c11, c12] = coefs(s4,phi1,phi2);

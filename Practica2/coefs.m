@@ -7,8 +7,8 @@ function [c1,c2] = coefs(s,b1,b2)
 %   * c1: Coeficiente asociado a b1
 %   * c2: Coeficiente asociado a b2
 
-c1 = sum(s.*b1);
-c2 = sum(s.*b2);
+c1 = sum(s.*b1)/2;
+c2 = sum(s.*b2)/2;
 
 end
 
