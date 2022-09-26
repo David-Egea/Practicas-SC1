@@ -6,8 +6,7 @@ function c = coefs(s,phi1,phi2)
 % Devuelve los coeficientes c1 y c2 de las bases b1 y b2 asociadas al simbolo s
 %   * c: Coeficientes
 
-c1 = sum(s.*b1)/2;
-c2 = sum(s.*b2)/2;
+c = [sum(s.*phi1)/2 sum(s.*phi2)/2];
 
 end
 
