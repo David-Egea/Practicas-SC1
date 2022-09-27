@@ -20,17 +20,18 @@
 % los dos posibles símbolos recibidos (i.e. s1 y s2). Es decir, los valores 
 % de y_n (t) para n = 1,2. ¿Son los resultados lógicos?
 
-T = 10;
+T = 0.01;
 Ts = T/20;
 
+A = 1;
 % Se genera el vector de tiempo
-t = linspace(0,T,T/Ts);
+t = Ts:Ts:T;
 % Primera señal
 s1 = ones(1,length(t));
 % Primera señal
 s2 = [ones(1,length(t)/2) -ones(1,length(t)/2)];
-phi1 = [ones(1,length(t)/2) zeros(1,length(t)/2)];
-phi2 = [zeros(1,length(t)/2) ones(1,length(t)/2)];
+phi1 = s1/(A*sqrt(T));
+phi2 = s2/(A*sqrt(T));
 
 % Llamada a la función de correlación
 [y1_s1,y2_s1] = correlatorType(T,Ts,s1);
@@ -39,7 +40,7 @@ phi2 = [zeros(1,length(t)/2) ones(1,length(t)/2)];
 figure;
 subplot(3,1,1);
 plot(t,s1,"b");
-xlabel("t (ms)");   
+xlabel("t (s)");   
 ylim([-1 1])
 title("señal de entrada s1(t)");
 subplot(3,1,2);
@@ -48,14 +49,14 @@ ylim([-1 1])
 title(" y1(t) salida del correlador 1");
 subplot(3,1,3);
 plot(t,y2_s1*phi2,"g-o");
-xlabel("t (ms)");
+xlabel("t (s)");
 ylim([-1 1])
 title("y2(t) salida del correlador 2 ");
 
 figure;
 subplot(3,1,1);
 plot(t,s2);
-xlabel("t (ms)");
+xlabel("t (s)");
 ylim([-1 1])
 title("señal de entrada s2(t)");
 subplot(3,1,2);
@@ -64,7 +65,7 @@ ylim([-1 1])
 title(" y1(t) salida del correlador 1");
 subplot(3,1,3);
 plot(t,y2_s2*phi2,"g-o");
-xlabel("t (ms)");
+xlabel("t (s)");
 ylim([-1 1])
 title("y2(t) salida del correlador 2 ");
 
@@ -112,7 +113,7 @@ hold on;
 plot(t,s1.snr_5dB);
 plot(t,s1.snr_10dB);
 plot(t,s1.snr_15dB);
-xlabel("t (ms)");   
+xlabel("t (s)");   
 title("Señal de s1 con y sin ruido");
 legend(["original","SNR=5dB", "SNR=10dB", "SNR=15dB"],'Location','southeast');
 % Simbolo s2
@@ -122,7 +123,7 @@ hold on;
 plot(t,s2.snr_5dB);
 plot(t,s2.snr_10dB);
 plot(t,s2.snr_15dB);
-xlabel("t (ms)");   
+xlabel("t (s)");   
 title("Señal de s2 con y sin ruido");
 legend(["original","SNR=5dB", "SNR=10dB", "SNR=15dB"],'Location','southeast');
 sgtitle("Comparativa señales con y sin ruido");
@@ -134,7 +135,7 @@ subplot(3,2,1);
 plot(t,s1.o);
 hold on;
 plot(t,s1.snr_5dB);
-xlabel("t (ms)");   
+xlabel("t (s)");   
 ylim([-2 2]);
 legend(["original","SNR=5dB"],'Location','southeast');
 title("señal de entrada s1(t) con ruido (SNR=5dB)");
@@ -144,7 +145,7 @@ ylim([-2 2])
 title("y1(t) salida del correlador 1");
 subplot(3,2,5);
 plot(t,y2.s1.snr_5dB*phi2,"g-o");
-xlabel("t (ms)");
+xlabel("t (s)");
 ylim([-2 2])
 title("y2(t) salida del correlador 2 ");
 % Simbolo s2
@@ -152,7 +153,7 @@ subplot(3,2,2);
 plot(t,s2.i,"b");
 hold on;
 plot(t,s2.snr_5dB);
-xlabel("t (ms)");   
+xlabel("t (s)");   
 ylim([-2 2]);
 legend(["original","SNR=5dB"],'Location','southeast');
 title("señal de entrada s2(t) con ruido (SNR=5dB)");
@@ -162,7 +163,7 @@ ylim([-2 2])
 title("y1(t) salida del correlador 1");
 subplot(3,2,6);
 plot(t,y2.s2.snr_5dB*phi2,"g-o");
-xlabel("t (ms)");
+xlabel("t (s)");
 ylim([-2 2])
 title("y2(t) salida del correlador 2 ");
 sgtitle("Salidas demodulador (y1, y2) para señales s1 y s2");

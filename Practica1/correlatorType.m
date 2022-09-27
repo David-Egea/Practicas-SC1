@@ -7,7 +7,7 @@ function [y1,y2] = correlatorType(T,Ts,r)
 % por los que estaría compuesto el demodulador.
 
 % Se genera el vector de tiempo
-t = linspace(0,T,T/Ts);
+t = 0:Ts:T;
 % Primera señal
 phi1 = [ones(1,length(t)/2) zeros(1,length(t)/2)];
 a1 = 1/sum(phi1.^2);

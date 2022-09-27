@@ -1,9 +1,6 @@
 %% LABORATORIO 2: DEMODULACIÓN DIGITAL EN BANDA BASE
 
     fprintf("\n\n\n---------------------------------------------------------------------------\n");
-%% LABORATORIO 2: DEMODULACIÓN DIGITAL EN BANDA BASE
-
-    fprintf("\n\n\n---------------------------------------------------------------------------\n");
     fprintf("\n     LABORATORIO 2: DEMODULACIÓN DIGITAL EN BANDA BASE\n");
     fprintf("\n     *    Sistemas de Comunicaciones I");
     fprintf("\n     *    22/09/2022");
