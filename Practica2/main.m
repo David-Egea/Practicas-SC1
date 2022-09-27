@@ -13,7 +13,7 @@
 clear all; close all;
 
 % Parametros
-T = 10; % Periodo de un simbolo en ms
+T = 0.01; % Periodo de un simbolo en ms
 Ts = T/20; % Tiempo de muestreo
 M = T/Ts; % Numero de muestras por simbolo
 
@@ -32,10 +32,10 @@ phi2 = s2/(A*sqrt(T));
 % si se puede expresar como la combinación lineal tal que
 %   si(t) = ci1 * phi1(t) + ci2 * phi2(t)
 
-c1 = coefs(s1,phi1,phi2); % Coeficientes de s1
-c2 = coefs(s2,phi1,phi2); % Coeficientes de s2
-c3 = coefs(s3,phi1,phi2); % Coeficientes de s3
-c4 = coefs(s4,phi1,phi2); % Coeficientes de s4
+c1 = coefs(s1,phi1,phi2,Ts); % Coeficientes de s1
+c2 = coefs(s2,phi1,phi2,Ts); % Coeficientes de s2
+c3 = coefs(s3,phi1,phi2,Ts); % Coeficientes de s3
+c4 = coefs(s4,phi1,phi2,Ts); % Coeficientes de s4
 
 % - Ejercicio 2.1 - 
 
@@ -44,7 +44,7 @@ N = 10; % Numero de simbolos
 
 % Generamos un vector aleatorio de los códigos de los simbolos [1,4]
 r = randi([0,1],1,2*N);
-s = modulador(r); 
+s = modulador(r,T,Ts,A); 
 
 % Generamos un vector de tiempos para la nueva señal
 t = [0:Ts:T*N-Ts];
@@ -53,7 +53,7 @@ t = [0:Ts:T*N-Ts];
 figure;
 plot(t,s,'Linewidth',2);
 ylim([-1.1 1.1]);
-xlabel("t(ms)");
+xlabel("t(s)");
 title('Representación simbolos concatenados');
 subtitle("Vector de símbolos: " + strjoin(string(r)));
 grid on;
@@ -63,47 +63,49 @@ grid on;
 % - Ejercicio 3.1 - 
  
 % Demodulación para obtener los coeficientes
-[y1, y2] = demodulador(s);
+[y1, y2] = demodulador(s, T, Ts, A);
 n=1:N;
 figure;
 subplot(2,1,1)
 stem(n,y1,'Linewidth',2);
-ylim([-4 4]);
-xlabel("t(ms)");
-title('Salida y1')
-subplot(2,1,2)
+ylim([-0.12 0.12]);
+xlabel("t(s)");
+title('Salida y1');
+subplot(2,1,2);
 stem(n,y2,'Linewidth',2);
-ylim([-4 4]);
-xlabel("t(ms)");
-title('Salida y2')
+ylim([-0.12 0.12]);
+xlabel("t(s)");
+title('Salida y2');
 sgtitle('Representación salida demoduladores');
 grid on;
+
 %% 4. Detector
 
 % - Ejercicio 4.1 - 
 
-s_hat=detector(y1,y2);
+s_hat = detector(y1,y2,T,Ts,A);
+t_hat = 0:N*Ts:N*(T-Ts);
 
-t_bit=linspace(1,N*T,N*2);
 figure;
-stem(t_bit,s_hat,'Linewidth',2);
+stem(t_hat,s_hat,'Linewidth',2);
 ylim([-1.1 1.1]);
-xlabel("t(ms)");
+xlabel("t(s)");
 title('Representación salida detector');
-subtitle("Vector de símbolos: " + strjoin(string(r)));
+subtitle("Vector de símbolos original: " + strjoin(string(s_hat)));
 grid on;
 
 %% 5. Probabilidad de Error
 
+clear; close all, format compact;
 
-%clear; close all, format compact;
-T = 10; % Periodo de un simbolo en ms
+T = 0.01; % Periodo de un simbolo en s
 Ts = T/20; % Tiempo de muestreo
-M=4; % 4-symbol alphabet
+A = 1; % Amplitud máxima 
+M = 4; % 4-symbol alphabet
 EsN0_dB = 0:2:20; % Vector to simulate
-esn0_lin=10.^(EsN0_dB/10); 
-ebn0_lin=esn0_lin/log2(M);
-EbN0_dB=10*log10(ebn0_lin);
+esn0_lin = 10.^(EsN0_dB/10); 
+ebn0_lin = esn0_lin/log2(M);
+EbN0_dB = 10*log10(ebn0_lin);
 Nsymb = 10000; % Number of symbols
 numErr = zeros(1,length(EsN0_dB)); % Pre-allocation
  
@@ -112,7 +114,7 @@ numErr = zeros(1,length(EsN0_dB)); % Pre-allocation
 % Generate Nsymb random equiprobable symbols
 s = randi([0,1],1,2*Nsymb);
 % Modulate symbols
-  s_t = modulador(s);
+  s_t = modulador(s,T,Ts,A);
 
 for iter_EsN0= 1:length(EsN0_dB)
     
@@ -123,9 +125,9 @@ for iter_EsN0= 1:length(EsN0_dB)
  
     
     % ---- Rx ----
-    [y1,y2] = demodulador(r_t);  % Or correlationType
+    [y1,y2] = demodulador(r_t,T,Ts,A);  % Or correlationType
     
-    s_hat = detector(y1,y2); % Decided symbols
+    s_hat = detector(y1,y2,T,Ts,A); % Decided symbols
     
     % Compute number of wrong symbols comparing s_hat with s
     

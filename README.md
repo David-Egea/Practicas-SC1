@@ -3,3 +3,4 @@ Repositorio de código para las prácticas de la asignatura de Sistemas de Comun
 
 Índice de prácticas realizadas:
 * Práctica 1 - [Demodulación Digital en Banda Base](/Practica1/README.md)
+* Práctica 2 - [Detección Digital en Banda Base](/Practica2/README.md)

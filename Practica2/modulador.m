@@ -1,18 +1,13 @@
-function [s] = modulador(r)
+function [s] = modulador(r, T, Ts, A)
 % Recibe:
-%   * cn: Coeficiente del simbolo n de las bases
-%   * N: numero de simbolos
-%   * phi1: primera señal base ortonormal 
-%   * phi2: segunda señal base ortonormal
-% Devuelve los coeficientes c1 y c2 de las bases b1 y b2 asociadas al simbolo s
-%   * s: Señal de salida
+%   * r: Array de códigos de símbolos
+%   * T: Período
+%   * Ts: Tiempo de muestreo
+%   * A: Amplitud máxima de las señales de salida
+% Devuelve:
+%   * s: Señal de salida de símbolos concatenados
 
-% Se asumen los siguientes parámetros
-T = 10; % 10 ms
-Ts = T/20; 
-A = 1;
-
-M = T/Ts; % Numero de muestras por simbolo
+M = T/Ts; % Numero de muestras por símbolo
 
 %Se definen los 4 posibles simbolos
 s1 = A*ones(1,M); % Señal s1(t)
@@ -28,10 +23,10 @@ phi2 = s2/(A*sqrt(T));
 % si se puede expresar como la combinación lineal tal que
 %   si(t) = ci1 * phi1(t) + ci2 * phi2(t)
 
-c1 = coefs(s1,phi1,phi2); % Coeficientes de s1
-c2 = coefs(s2,phi1,phi2); % Coeficientes de s2
-c3 = coefs(s3,phi1,phi2); % Coeficientes de s3
-c4 = coefs(s4,phi1,phi2); % Coeficientes de s4
+c1 = coefs(s1,phi1,phi2,Ts); % Coeficientes de s1
+c2 = coefs(s2,phi1,phi2,Ts); % Coeficientes de s2
+c3 = coefs(s3,phi1,phi2,Ts); % Coeficientes de s3
+c4 = coefs(s4,phi1,phi2,Ts); % Coeficientes de s4
 
 % Inicializacion de la señal de salida
 s = [];

@@ -1,18 +1,15 @@
-function [y1,y2] = demodulador(r)
+function [y1,y2] = demodulador(r, T, Ts, A)
 % Recibe:
-%   * r: Señal de entrada
-% Devuelve los coeficientes salida y1 y y2 de las bases phi1 y phi2
-%   * y1: Coeficientes asociados a la phi1
-%   * y2: Coeficientes asociados a la phi2
+%   * r: Vector de muestras temporales de N símbolos
+%   * T: Tiempo de símbolo
+%   * Ts: Periodo de muestreo
+% Devuelve:
+%   * y1: Vector de coeficientes asociados a la phi1 
+%   * y2: Vector de coeficientes asociados a la phi2
 
-% Se asumen los siguientes parámetros
-T = 10; % 10 ms
-Ts = T/20; 
-M = T/Ts; % Numero de simbolos
-
+M = T/Ts; % Número de simbolos
 
 % Funciones s1(t) y s2(t) usadas en la práctica anterior
-A = 1; % Amplitud
 s1 = A*ones(1,M); % Señal s1(t)
 s2 = A*[ones(1,M/2) -ones(1,M/2)]; % Señal s2(t)
 s3 = -A*ones(1,M); % Señal s3(t)
@@ -27,11 +24,10 @@ N = length(r)/(T/Ts);
 
 y1 = [];
 y2 = [];
-for i=1:N
-    % Llamada a la función de correlación
-    y1 = [y1 sum(r((i-1)*M+1:(i*M)).*phi1)/2];
-    y2 = [y2 sum(r((i-1)*M+1:(i*M)).*phi2)/2];
+for i=0:N-1
+    % LLamada a la funcion correlatorType para obtener los coeficientes
+    [y1_s,y2_s] = correlatorType(phi1,phi2,Ts,r(i*M+1:(i+1)*M));
+    y1 = [y1 y1_s(M)];
+    y2 = [y2 y2_s(M)];
 end
-
 end
-
