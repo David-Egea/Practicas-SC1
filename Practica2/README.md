@@ -9,6 +9,9 @@ Autores:
 
 # 1. Introducción
 
+El trabajo de esta segunda práctica se centra en ampliar el desarrollo realizado en la práctica anterior, incluyendo ahora nuevos elementos como el modulador o el detector. 
+
+De esta forma, se pretende conseguir un sistema de comunicación similar al de la figura:
 
 !["Esquema completo del sistema"](Practica2/../images/1_esquema.png)
 
@@ -19,8 +22,6 @@ Los archivos desarrollados en esta práctica:
 - `coeffs.m`
 
 Además utilizaremos el archivo `correlatorType.m`, desarrollado en la práctica 1.
-
-
 
 # 2. Modulador
 
@@ -58,7 +59,7 @@ El resultado de la modulación es:
 
 !["Secuencia de símbolos modulados"](Practica2/../images/2_1_simbolos_modulados.png "Secuencia de símbolos modulados")
 
-Se puede observar como la modulación se ha realizado correctamente, y que el vector de símbolos introducidos se han traducido en las correspondiente concatenación de señales. 
+Se puede observar como el vector binario original se ha traducido correctamente en la señal de símbolos concatenados de salida. 
 
 # 3. Demodulador
 
