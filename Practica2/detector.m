@@ -42,9 +42,9 @@ for i=1:N
    elseif I==2
       s=[0 1];
    elseif I==3
-      s=[1 0];  
-   else
       s=[1 1];  
+   else
+      s=[1 0];  
    end
    % Se incluye el vector
    s_hat=[s_hat s];

@@ -37,7 +37,7 @@ if r(i)==0 && r(i+1)==0
    s=[s c1(1)* phi1+ c1(2)* phi2];
 elseif r(i)==0 && r(i+1)==1
    s=[s c2(1)* phi1+ c2(2)* phi2];
-elseif r(i)==1 && r(i+1)==0
+elseif r(i)==1 && r(i+1)==1
    s=[s c3(1)* phi1+ c3(2)* phi2];  
 else
    s=[s c4(1)* phi1+ c4(2)* phi2] ;  

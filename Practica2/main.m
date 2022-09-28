@@ -56,7 +56,14 @@ ylim([-1.1 1.1]);
 xlabel("t(s)");
 title('Representación simbolos concatenados');
 subtitle("Vector de símbolos: " + strjoin(string(r)));
-grid on;
+grid minor;
+for i=1:N
+    xline(i*T,"k--");
+    t = text(i*T-(3*T/4),1.05,strcat(string(r(i*2-1)),string(r(i*2))));
+    t(1).FontSize = 10;
+    t(1).Color = "blue";
+end
+clear str
 
 %% 3. Demodulador
 
@@ -66,19 +73,33 @@ grid on;
 [y1, y2] = demodulador(s, T, Ts, A);
 n=1:N;
 figure;
-subplot(2,1,1)
-stem(n,y1,'Linewidth',2);
+stem(n,y1,'b','Linewidth',2);
+grid minor;
+hold on;
+stem(n,y2,'g','Linewidth',2);
+xlim([1,10.5])
 ylim([-0.12 0.12]);
-xlabel("t(s)");
-title('Salida y1');
-subplot(2,1,2);
-stem(n,y2,'Linewidth',2);
-ylim([-0.12 0.12]);
-xlabel("t(s)");
-title('Salida y2');
-sgtitle('Representación salida demoduladores');
-grid on;
-
+for i=1:N
+    xline(i,"k--");
+    if y1(i)
+        t1 = text(i,y1(i)+sign(y1(i))*0.01,strcat(string(y1(i))));
+    else
+        t1 = text(i,0.01,strcat(string(y1(i))));
+    end
+    t1(1).FontSize = 10;
+    t1(1).Color = "blue";
+    if y2(i)
+        t2 = text(i,y2(i)+sign(y2(i))*0.01,strcat(string(y2(i))));
+    else
+        t2 = text(i,0.01,strcat(string(y2(i))));
+    end
+    t2(1).FontSize = 10;
+    t2(1).Color = "green";
+end
+xlabel("Simbolo nro.");
+title('Representación salida demoduladores');
+legend("coefs. phi1","coefs. phi2","location","northwest");
+clear t1 t2
 %% 4. Detector
 
 % - Ejercicio 4.1 - 
@@ -88,7 +109,7 @@ t_hat = 0:N*Ts:N*(T-Ts);
 
 figure;
 stem(t_hat,s_hat,'Linewidth',2);
-ylim([-1.1 1.1]);
+ylim([0 1.1]);
 xlabel("t(s)");
 title('Representación salida detector');
 subtitle("Vector de símbolos original: " + strjoin(string(s_hat)));
