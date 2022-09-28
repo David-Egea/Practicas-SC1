@@ -71,6 +71,7 @@ Se aprecia como los resultados son lógicos y el componente funciona a la perfec
 ## Ejercicio 5.1
 
 En la siguiente figura se representan 3 gráficas. La primera representa la probabilidad de error por simbolo obtenida con nuestro sistema de modulador, demodulador y detector. La siguiente también representa la probabilidad de error por simbolo pero en este caso teórica, siguiendo la fórmula
+
  $$ Pe = Q({ \sqrt {2*log_{2}M* EbNo}* sin({\pi \over m})})$$
 
  Por último tendremos el Bit Error Rate (BER), que es la probabilidad de error teórica pero en este caso por bit. Se calculará dividiendo la formula de antes entre $log_{2}M$ donde M es el numero de simbolos distintos, en este caso 4.
