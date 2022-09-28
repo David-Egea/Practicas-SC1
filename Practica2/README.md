@@ -37,9 +37,28 @@ s4= $A\sqrt T$ [0 -1]
 
 ## Ejercicio 2.1
 
+> La implentación del modulador utilizado en este ejercicio se encuentra en el àrchivo `modulador`.m.  
 
+La función `modulador` genera un vector de muestras producto de la concatenación de los distintos símbolos del sistema {*s1,s2,s3,s4*}.
 
-!["Secuencia de símbolos modulados"](Practica2/../images/2_1_simbolos_modulados.png)
+Para la selección de los símbolos se crea un vector pseudoaleatorio de ceros y unos, que se pasa como argumento al modulador. En el caso de la práctica como hay cuatro señales básicas ha sido necesario emplear dos bits para codificar cada símbolo. 
+
+En cuanto a la codificación, se ha optado por el uso de *códigos binarios reflejados* o *códigos Gray*. Está técnica es especialmente interesante por que minimiza la probabilidad de error al aplicarse la propiedad de que símbolos consecutivos solo difieren en un único bit. Los códigos son los siguientes:
+
+    cods1 = [0 0] , cods2 = [0 1]  
+    cods3 = [1 1] , cods4 = [1 0]
+
+Por otra parte, para lograr el *array* de bits pseudoaleatorio de entrada se puede utilizar la siguiente expresión en MATLAB:
+
+```MATLAB
+% Generación de un vector pseudoaleatorio (N=10)
+r = randi([0,1],1,2*N); 
+```
+El resultado de la modulación es:
+
+!["Secuencia de símbolos modulados"](Practica2/../images/2_1_simbolos_modulados.png "Secuencia de símbolos modulados")
+
+Se puede observar como la modulación se ha realizado correctamente, y que el vector de símbolos introducidos se han traducido en las correspondiente concatenación de señales. 
 
 # 3. Demodulador
 
