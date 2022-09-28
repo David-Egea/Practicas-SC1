@@ -18,13 +18,12 @@ Las señales `s1` y `s2` que utilizadas en esta práctica son las siguientes:
 Para codificar estos simbolos, hemos utilizado las siguientes bases ortonormales:
 
 $$ϕ_1 (t)={(s1 (t)) \over √T}$$
-
 $$ϕ_2 (t)={(s2 (t)) \over √T}$$
 
 Teniendo en cuenta estas bases, los coeficientes para los simbolos s1 y s2 son:
 
-$$s1= $\sqrt T$ [1 0]$$       
-$$s2= $\sqrt T$ [0 1]$$ 
+$$s1= \sqrt T [1 0]$$       
+$$s2= \sqrt T [0 1]$$ 
 
 ## 2. Demodulador de un símbolo
 
