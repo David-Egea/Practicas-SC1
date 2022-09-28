@@ -38,13 +38,15 @@ s4= $A\sqrt T$ [0 -1]
 
 ## Ejercicio 2.1
 
-> La implentación del modulador utilizado en este ejercicio se encuentra en el àrchivo `modulador`.m.  
+> La implentación del modulador utilizado en este ejercicio se encuentra en el archivo `modulador.m`  
 
 La función `modulador` genera un vector de muestras producto de la concatenación de los distintos símbolos del sistema {*s1,s2,s3,s4*}.
 
 Para la selección de los símbolos se crea un vector pseudoaleatorio de ceros y unos, que se pasa como argumento al modulador. En el caso de la práctica como hay cuatro señales básicas ha sido necesario emplear dos bits para codificar cada símbolo. 
 
-En cuanto a la codificación, se ha optado por el uso de *códigos binarios reflejados* o *códigos Gray*. Está técnica es especialmente interesante por que minimiza la probabilidad de error al aplicarse la propiedad de que símbolos consecutivos solo difieren en un único bit. Los códigos son los siguientes:
+En cuanto a la codificación, se ha optado por el uso de *códigos binarios reflejados* o *códigos Gray*. Esta técnica es especialmente interesante porque minimiza la probabilidad de error, ya que símbolos consecutivos difieren únicamente en un solo bit. 
+
+Los códigos asignados para cada símbolos son los siguientes:
 
     cods1 = [0 0] , cods2 = [0 1]  
     cods3 = [1 1] , cods4 = [1 0]
@@ -67,10 +69,13 @@ El demodulador recibe como entrada la señal de los símbolos concatenados y dev
 
 ## Ejercicio 3.1
 
-En nuestro diseño se irá recorriendo el vector de entrada y se llamará a la función `correlatorType.m` pasandole cada vez las 20 muestras correspondientes a un símbolo. Para cada uno de los dos vectores que devuelve la función cogeremos la última muestra. Con estos valores se llenarán dos vectores de longitud N, uno para cada demodulador, que es lo que devuelve el bloque.
+En nuestro diseño se irá recorriendo el vector de entrada y se llamará a la función `correlatorType.m` pasándole cada vez las 20 muestras correspondientes a un símbolo. Para cada uno de los dos vectores que devuelve la función cogeremos la última muestra. Con estos valores se llenarán dos vectores de longitud N, uno para cada demodulador, que es lo que devuelve el bloque.
 
+Para comprobar el funcionamiento de este módulo, se ha probado a introducir la señal de salida de la etapa anterior en el demodulador, de manera que el *output* esperado son los coeficientes de cada uno de los N símbolos transmitidos con respecto a las bases phi1 y phi2. 
 
 !["Coeficientes demodulados"](Practica2/../images/3_1_coeficientes_demodulados.png)
+
+Se observa como los coeficientes calculados coinciden con los valores esperados. Por  ejemplo, el primer par de coeficientes *0.1* para *phi1* y *0* para *phi2* sabiendo que el símbolo transitido fue *s1*, con código gray *00*.
 
 # 4. Detector
 
@@ -84,9 +89,9 @@ Este es el resultado de una de las pruebas realizadas. Se muestra la gráfica de
 
 !["Coeficientes detectados"](Practica2/../images/4_1_coeficientes_detectados.png)
 
-Se aprecia como los resultados son lógicos y el componente funciona a la perfección
+Se aprecia como los resultados son lógicos y el componente funciona a la perfección, al coincidir exactamente la secuencia detectada con la secuencia original introducida en el modulador al comienzo (ejercicio 2.1). 
 
-# Probabilidad de error
+# 5. Probabilidad de error
 
 ## Ejercicio 5.1
 
@@ -96,13 +101,10 @@ En la siguiente figura se representan 3 gráficas. La primera representa la prob
 
  Por último tendremos el Bit Error Rate (BER), que es la probabilidad de error teórica pero en este caso por bit. Se calculará dividiendo la formula de antes entre $log_{2}M$ donde M es el numero de simbolos distintos, en este caso 4.
 
---Poner nueva imagen Probabilidad error
-
+!["Gráfica PE - SNR con Codificación Gary"](Practica2/../images/5_1_gray_pe_snr.png)
 
 Obviamente, con mayor nivel SNR, la probabilidad de error disminuirá en todos los casos. Si prestamos un poco de atención vemos como la teórica y la simulada están muy parejas,con el BER valiendo siempre la mitad de la teórica. Esta similitud se debe a que como se transmite un número grande de símbolos, el rendimiento de nuestro sistema en cuanto a errores será similar a lo calculado. 
 
 Además, obtenemos estos resultados porque hemos elegido el código Gray para codificar los simbolos (00 para S1, 01 para S2, 11 para S3 y 10 para S4) que minimiza el ratio de errores. Por ejemplo, si codificaramos los símbolos de otra forma (00 para S1, 01 para S2, 10 para S3 y 11 para S4) vemos en la siguiente gráfica que nuestra probabilidad de error de simbolo es ahora mayor que la teórica.
 
-
 !["Gráfica PE - SNR"](Practica2/../images/5_1_pe_snr.png)
-
