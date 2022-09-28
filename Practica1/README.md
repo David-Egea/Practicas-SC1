@@ -15,6 +15,17 @@ Las señales `s1` y `s2` que utilizadas en esta práctica son las siguientes:
 
 !["Símbolos"](Practica1/../images/1_simbolos.jpg)
 
+Para codificar estos simbolos, hemos utilizado las siguientes bases ortonormales:
+
+$$ϕ_1 (t)={(s1 (t)) \over √T}$$
+
+$$ϕ_2 (t)={(s2 (t)) \over √T}$$
+
+Teniendo en cuenta estas bases, los coeficientes para los simbolos s1 y s2 son:
+
+$$s1= $\sqrt T$ [1 0]$$       
+$$s2= $\sqrt T$ [0 1]$$ 
+
 ## 2. Demodulador de un símbolo
 
 Esta parte se centra en la implementación del demodulador por correlación. 
@@ -25,22 +36,18 @@ Esta parte se centra en la implementación del demodulador por correlación.
 ---
 Representación temporal del vector de salida de ambos correladores para los dos posibles símbolos recibidos (i.e. s1 y s2). Es decir, los valores de y_n (t) para n = 1,¿Son los resultados lógicos? Coméntelos. Quizá sea una buena idea utilizar la función subplot para presentar los resultados. Asegúrese de que todas las gráficas tienen los mismos ejes para facilitar la comparación.
    
-Vemos que para el simbolo s1 y1(t) vale 1 y y2(t) desde 0 hasta T/2. Desde T/2 hasta T, será lo contrario, con y1(t) valiendo 0 y y2(t) valiendo 1.
-
-Estos resultados tienen sentido ya que como la señal no tiene nada de ruido los coeficientes para s1 serán 1 para ambas bases.
+Para el simbolo s1, la salida del demodulador de phi1 subirá de forma constante hasta llegar a su valor final de 0.1 y la salida del demodulador de phi2 sube hasta la mitad del periodo y desde ahí baja hasta el cero. Este resultado tiene sentido ya que como hemos comentado, los coeficientes de s1 son $\sqrt T= \sqrt 0.01=0.1$ y 0 respectivamente, que se corresponden con los valores finales de los demoduladores.
 
 !["Correlacion Demodulador s1"](Practica1/../images/2_1_s1.jpg "Correlacion Demodulador s1")
 
-Para el simbolo s2 y1(t) vale 1 y y2(t) desde 0 hasta T/2 al igual que s1. Sin embargo, desde T/2 hasta T, y1(t) estará en 0 y y2(t) valdrá -1.
-
-De nuevo al no haber ruido los coeficientes para s2 serán -1 y 1.Asegúrese
+Analogamente, para el simbolo s2, la salida del demodulador de phi1 subirá hasta T/2 para despues bajar a cero y la salida del demodulador de phi2 subirá durante todo el periodo hasta 0.1. También es un resultado lógico ya que los coeficientes de s2 son 0 y $\sqrt T= \sqrt 0.01=0.1$ , idénticos a la muestra final de las salidas de los demoduladores.
 
 !["Correlacion Demodulador s2"](Practica1/../images/2_1_s2.jpg "Correlacion Demodulador s2")
 
 
 ¿Cuál sería el instante temporal idóneo para hacer el muestreo y enviar la señal al detector?
 
-Lo mejor sería hacer el muestreo en el punto medio, de esta forma se pueden evitar posibles problemas de ISI (Interferencia entre símbolos). En nuestro caso el muestreo se debería hacer para t= T/4 para la primera base y t= 3T/4 para la segun  
+Lo mejor sería hacer el muestreo en el punto final, ya que en este punto se hace la integral durante todo el periodo. Si vemos las salidas de los demoduladores, estas  suben o bajan hasta llegar al coeficiente real en la última muestra.  
 
 ---
 ### Ejercicio 2.2
