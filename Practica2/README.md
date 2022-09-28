@@ -7,41 +7,81 @@ Autores:
 
 ---
 
-## 1. Introducción
+# 1. Introducción
 
 
 !["Esquema completo del sistema"](Practica2/../images/1_esquema.png)
 
 Los archivos desarrollados en esta práctica:
-- `Modulador.m`
+- `modulador.m`
+- `demodulador.m`
+- `detector.m`
+- `coeffs.m`
+
+Además utilizaremos el archivo `correlatorType.m`, desarrollado en la práctica 1.
 
 
 
-## 2. Modulador
+# 2. Modulador
 
 El bloque correspondiente al demodulador digital en banda base se encarga de construir señales moduladas que varían en el tiempo en función de ciertos símbolos de entrada. Los símbolos de entrada se combinan linealmente con ciertas bases ortogonales para dar lugar a las señales moduladas.
 
 !["Señales moduladas a utilizar"](Practica2/../images/2_signals.png)
 
-
-
-
 Para las bases ortonormales phi1 y phi2 los coeficientes de las bases son: 
-s1= [1 0]  s2=[0 1] s3=[-1 0] s4= [0 -1]
+
+s1= $A\sqrt T$ [1 0]       
+s2= $A\sqrt T$ [0 1]  
+s3= $A\sqrt T$ [-1 0]  
+s4= $A\sqrt T$ [0 -1]  
+
+## Ejercicio 2.1
 
 
-# Ejercicio 2.1
 
 !["Secuencia de símbolos modulados"](Practica2/../images/2_1_simbolos_modulados.png)
 
-# Ejercicio 3.1
+# 3. Demodulador
+
+El demodulador recibe como entrada la señal de los símbolos concatenados y devuelve los vectores de salida de los dos demoduladores muestrados en k·T, k=1...N, siendo N el número de símbolos.
+
+## Ejercicio 3.1
+
+En nuestro diseño se irá recorriendo el vector de entrada y se llamará a la función `correlatorType.m` pasandole cada vez las 20 muestras correspondientes a un símbolo. Para cada uno de los dos vectores que devuelve la función cogeremos la última muestra. Con estos valores se llenarán dos vectores de longitud N, uno para cada demodulador, que es lo que devuelve el bloque.
+
 
 !["Coeficientes demodulados"](Practica2/../images/3_1_coeficientes_demodulados.png)
 
-# Ejercicio 4.1
+# 4. Detector
+
+El detector recibe los vectores de salida del detector y, basándose en esos valores, decide qué símbolo es más probable que fuera transmitido.
+
+## Ejercicio 4.1
+ 
+En este caso para cada simbolo que recibimos juntamos las salidas de los dos demoduladores en una tupla. Luego calculamos la distancia de esta tupla a los coeficientes de cada uno de los cuatro símbolos  (tomando la norma euclidea del vector diferencia). Finalmente, seleccionamos el símbolo que resulte en la menor distancia y lo añadimos a s_hat.
+
+Este es el resultado de una de las pruebas realizadas. Se muestra la gráfica de la salida del detector y arriba aparece el vector de simbolos que se mando originalmente.
 
 !["Coeficientes detectados"](Practica2/../images/4_1_coeficientes_detectados.png)
 
-# Ejercicio 5.1
+Se aprecia como los resultados son lógicos y el componente funciona a la perfección
+
+# Probabilidad de error
+
+## Ejercicio 5.1
+
+En la siguiente figura se representan 3 gráficas. La primera representa la probabilidad de error por simbolo obtenida con nuestro sistema de modulador, demodulador y detector. La siguiente también representa la probabilidad de error por simbolo pero en este caso teórica, siguiendo la fórmula
+ $$ Pe = Q({ \sqrt {2*log_{2}M* EbNo}* sin({\pi \over m})})$$
+
+ Por último tendremos el Bit Error Rate (BER), que es la probabilidad de error teórica pero en este caso por bit. Se calculará dividiendo la formula de antes entre $log_{2}M$ donde M es el numero de simbolos distintos, en este caso 4.
+
+--Poner nueva imagen Probabilidad error
+
+
+Obviamente, con mayor nivel SNR, la probabilidad de error disminuirá en todos los casos. Si prestamos un poco de atención vemos como la teórica y la simulada están muy parejas,con el BER valiendo siempre la mitad de la teórica. Esta similitud se debe a que como se transmite un número grande de símbolos, el rendimiento de nuestro sistema en cuanto a errores será similar a lo calculado. 
+
+Además, obtenemos estos resultados porque hemos elegido el código Gray para codificar los simbolos (00 para S1, 01 para S2, 11 para S3 y 10 para S4) que minimiza el ratio de errores. Por ejemplo, si codificaramos los símbolos de otra forma (00 para S1, 01 para S2, 10 para S3 y 11 para S4) vemos en la siguiente gráfica que nuestra probabilidad de error de simbolo es ahora mayor que la teórica.
+
 
 !["Gráfica PE - SNR"](Practica2/../images/5_1_pe_snr.png)
+
