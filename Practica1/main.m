@@ -16,6 +16,8 @@
 
 %% 2. Demodulador de un símbolo - Ejercicio 2.1 
 
+clear; close all;
+
 % a. Representación temporal del vector de salida de ambos correladores para 
 % los dos posibles símbolos recibidos (i.e. s1 y s2). Es decir, los valores 
 % de y_n (t) para n = 1,2. ¿Son los resultados lógicos?
@@ -25,148 +27,146 @@ Ts = T/20;
 
 A = 1;
 % Se genera el vector de tiempo
-t = Ts:Ts:T;
-% Primera señal
-s1 = ones(1,length(t));
-% Primera señal
-s2 = [ones(1,length(t)/2) -ones(1,length(t)/2)];
-phi1 = s1/(A*sqrt(T));
-phi2 = s2/(A*sqrt(T));
+t = 0:Ts:T-Ts;
+
+% Generamos las señales s1(t) y s2(t)
+s1.o = ones(1,length(t));
+s2.o = [ones(1,length(t)/2) -ones(1,length(t)/2)];
+
+% Bases ortonormales phi1(t) y phi2(t)
+phi1 = s1.o/(A*sqrt(T));
+phi2 = s2.o/(A*sqrt(T));
 
 % Llamada a la función de correlación
-[y1_s1,y2_s1] = correlatorType(T,Ts,s1);
-[y1_s2,y2_s2] = correlatorType(T,Ts,s2);
-% Representación de las señales
+[y1_s1,y2_s1] = correlatorType(phi1,phi2,Ts,s1.o);
+[y1_s2,y2_s2] = correlatorType(phi1,phi2,Ts,s2.o);
+
+% Representación de las señales s1(t) y s2(t)
 figure;
-subplot(3,1,1);
-plot(t,s1,"b");
+subplot(3,2,1);
+plot(t,s1.o,'lineWidth',2);
+grid minor;
 xlabel("t (s)");   
-ylim([-1 1])
+xlim([0 T-Ts]);
+ylim([0 1.1]);
 title("señal de entrada s1(t)");
-subplot(3,1,2);
-plot(t,y1_s1*phi1,"r*-");
-ylim([-1 1])
-title(" y1(t) salida del correlador 1");
-subplot(3,1,3);
-plot(t,y2_s1*phi2,"g-o");
+subplot(3,2,[3,5]);
+plot(t,y1_s1,"r-o",'lineWidth',2);
+hold on;
+plot(t,y2_s1,"g-*",'lineWidth',2);
+grid minor;
+xlim([0 T-Ts]);
+ylim([0 0.1]);
 xlabel("t (s)");
-ylim([-1 1])
-title("y2(t) salida del correlador 2 ");
-
-figure;
-subplot(3,1,1);
-plot(t,s2);
+title("Salida del demodulador");
+legend("y1(t)","y2(t)",'location','northwest');
+subplot(3,2,2);
+plot(t,s2.o,'lineWidth',2);
+grid minor;
 xlabel("t (s)");
-ylim([-1 1])
+xlim([0 T-Ts]);
+ylim([-1 1]);
 title("señal de entrada s2(t)");
-subplot(3,1,2);
-plot(t,y1_s2*phi1,"r*-");
-ylim([-1 1])
-title(" y1(t) salida del correlador 1");
-subplot(3,1,3);
-plot(t,y2_s2*phi2,"g-o");
+subplot(3,2,[4,6]);
+plot(t,y1_s2,"r-o",'lineWidth',2);
+hold on;
+plot(t,y2_s2,"g-*",'lineWidth',2);
+grid minor;
+xlim([0 T-Ts]);
+ylim([0 0.1]);
 xlabel("t (s)");
-ylim([-1 1])
-title("y2(t) salida del correlador 2 ");
-
+title("Salida del demodulador");
+legend("y1(t)","y2(t)",'location','northwest');
+sgtitle("Demodulación de las señales s1(t) y s2(t)");
 
 %% 2. Demodulador de un símbolo - Ejercicio 2.2
 
-clear; close all;
-
-% Valores
-T = 10;
-Ts = T/20;
-
-% Se genera el vector de tiempo
-t = linspace(0,T,T/Ts);
-
-% Simbolos s1 y s2
-s1.o = ones(1,length(t));
-s2.i = [ones(1,length(t)/2) -ones(1,length(t)/2)];
-
-phi1 = [ones(1,length(t)/2) zeros(1,length(t)/2)];
-phi2 = [zeros(1,length(t)/2) ones(1,length(t)/2)];
-
 % Generamos el ruido blanco de distintas potencias
 s1.snr_5dB = awgn(s1.o,5);
-s2.snr_5dB = awgn(s2.i,5);
+s2.snr_5dB = awgn(s2.o,5);
 s1.snr_10dB = awgn(s1.o,10);
-s2.snr_10dB = awgn(s2.i,10);
+s2.snr_10dB = awgn(s2.o,10);
 s1.snr_15dB = awgn(s1.o,15);
-s2.snr_15dB = awgn(s2.i,15);
+s2.snr_15dB = awgn(s2.o,15);
 
 % Llamada a la función de correlación
-[y1.s1.snr_5dB,y2.s1.snr_5dB] = correlatorType(T,Ts,s1.snr_5dB);
-[y1.s2.snr_5dB,y2.s2.snr_5dB] = correlatorType(T,Ts,s2.snr_5dB);
-[y1.s1.snr_10dB,y2.s1.snr_10dB] = correlatorType(T,Ts,s1.snr_10dB);
-[y1.s2.snr_10dB,y2.s2.snr_10dB] = correlatorType(T,Ts,s2.snr_10dB);
-[y1.s1.snr_15dB,y2.s1.snr_15dB] = correlatorType(T,Ts,s1.snr_15dB);
-[y1.s2.snr_15dB,y2.s2.snr_15dB] = correlatorType(T,Ts,s2.snr_15dB);
+[y1.s1.snr_5dB,y2.s1.snr_5dB] = correlatorType(phi1,phi2,Ts,s1.snr_5dB);
+[y1.s2.snr_5dB,y2.s2.snr_5dB] = correlatorType(phi1,phi2,Ts,s2.snr_5dB);
+[y1.s1.snr_10dB,y2.s1.snr_10dB] = correlatorType(phi1,phi2,Ts,s1.snr_10dB);
+[y1.s2.snr_10dB,y2.s2.snr_10dB] = correlatorType(phi1,phi2,Ts,s2.snr_10dB);
+[y1.s1.snr_15dB,y2.s1.snr_15dB] = correlatorType(phi1,phi2,Ts,s1.snr_15dB);
+[y1.s2.snr_15dB,y2.s2.snr_15dB] = correlatorType(phi1,phi2,Ts,s2.snr_15dB);
 
 % Comparación entre la señal con y sin ruido
 figure;
 % Simbolo s1
 subplot(2,1,1);
-plot(t,s1.o,"b");
+plot(t,s1.o,'lineWidth',2);
 hold on;
-plot(t,s1.snr_5dB);
-plot(t,s1.snr_10dB);
-plot(t,s1.snr_15dB);
+plot(t,s1.snr_5dB,'lineWidth',2);
+plot(t,s1.snr_10dB,'lineWidth',2);
+plot(t,s1.snr_15dB,'lineWidth',2);
+grid minor;
+xlim([0 T-Ts]);
 xlabel("t (s)");   
 title("Señal de s1 con y sin ruido");
-legend(["original","SNR=5dB", "SNR=10dB", "SNR=15dB"],'Location','southeast');
-% Simbolo s2
+legend(["original","SNR=5dB", "SNR=10dB", "SNR=15dB"],'Location','northeast');
 subplot(2,1,2);
-plot(t,s2.i,"b");
+plot(t,s2.o,'lineWidth',2);
 hold on;
-plot(t,s2.snr_5dB);
-plot(t,s2.snr_10dB);
-plot(t,s2.snr_15dB);
+plot(t,s2.snr_5dB,'lineWidth',2);
+plot(t,s2.snr_10dB,'lineWidth',2);
+plot(t,s2.snr_15dB,'lineWidth',2);
+grid minor;
 xlabel("t (s)");   
+xlim([0 T-Ts]);
 title("Señal de s2 con y sin ruido");
-legend(["original","SNR=5dB", "SNR=10dB", "SNR=15dB"],'Location','southeast');
+legend(["original","SNR=5dB", "SNR=10dB", "SNR=15dB"],'Location','northeast');
 sgtitle("Comparativa señales con y sin ruido");
 
-% Representación de los resultados con ruido (para 5dB)
+% Representación de la demodulación para una señal con SNR=5dB
 figure;
-% Simbolo s1
 subplot(3,2,1);
-plot(t,s1.o);
+plot(t,s1.o,'lineWidth',2);
 hold on;
-plot(t,s1.snr_5dB);
+plot(t,s1.snr_5dB,'lineWidth',2);
+grid minor;
 xlabel("t (s)");   
-ylim([-2 2]);
-legend(["original","SNR=5dB"],'Location','southeast');
-title("señal de entrada s1(t) con ruido (SNR=5dB)");
-subplot(3,2,3);
-plot(t,y1.s1.snr_5dB*phi1,"r*-");
-ylim([-2 2])
-title("y1(t) salida del correlador 1");
-subplot(3,2,5);
-plot(t,y2.s1.snr_5dB*phi2,"g-o");
+xlim([0 T-Ts]);
+legend(["Sin ruido","SNR=5dB"],'Location','northeast');
+title("Señal de entrada s1(t) con ruido (SNR=5dB)");
+subplot(3,2,[3,5]);
+plot(t,y1_s1,"r--",'lineWidth',1);
+hold on;
+plot(t,y1.s1.snr_5dB,"r-o",'lineWidth',2);
+plot(t,y2_s1,"g--",'lineWidth',1);
+plot(t,y2.s1.snr_5dB,"g-*",'lineWidth',2);
+grid minor;
+xlim([0 T-Ts]);
 xlabel("t (s)");
-ylim([-2 2])
-title("y2(t) salida del correlador 2 ");
-% Simbolo s2
+title("Salida del demodulador para s1(t) con ruido");
+legend("y1(t) Sin Ruido","y1(t) SNR=5dB","y2(t) Sin Ruido","y2(t) SNR=5dB",'location','northwest');
 subplot(3,2,2);
-plot(t,s2.i,"b");
+plot(t,s2.o,'lineWidth',2);
 hold on;
-plot(t,s2.snr_5dB);
-xlabel("t (s)");   
-ylim([-2 2]);
-legend(["original","SNR=5dB"],'Location','southeast');
-title("señal de entrada s2(t) con ruido (SNR=5dB)");
-subplot(3,2,4);
-plot(t,y1.s2.snr_5dB*phi1,"r*-");
-ylim([-2 2])
-title("y1(t) salida del correlador 1");
-subplot(3,2,6);
-plot(t,y2.s2.snr_5dB*phi2,"g-o");
+plot(t,s2.snr_5dB,'lineWidth',2);
+grid minor;
 xlabel("t (s)");
-ylim([-2 2])
-title("y2(t) salida del correlador 2 ");
-sgtitle("Salidas demodulador (y1, y2) para señales s1 y s2");
+xlim([0 T-Ts]);
+legend(["Sin ruido","SNR=5dB"],'Location','northeast');
+title("Señal de entrada s2(t) con ruido (SNR=5dB)");
+subplot(3,2,[4,6]);
+plot(t,y1_s2,"r--",'lineWidth',1);
+hold on;
+plot(t,y1.s2.snr_5dB,"r-o",'lineWidth',2);
+plot(t,y2_s2,"g--",'lineWidth',1);
+plot(t,y2.s2.snr_5dB,"g-*",'lineWidth',2);
+grid minor;
+xlim([0 T-Ts]);
+xlabel("t (s)");
+title("Salida del demodulador para s2(t) con ruido");
+legend("y1(t) Sin Ruido","y1(t) SNR=5dB","y2(t) Sin Ruido","y2(t) SNR=5dB",'location','northwest');
+sgtitle("Demodulación de las señales s1(t) y s2(t) con ruido (SNR=5dB)");
 
 %% 3. Salida del demodulador - Ejercicio 3.1
 
