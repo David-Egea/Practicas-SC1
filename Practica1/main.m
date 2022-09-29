@@ -24,8 +24,8 @@ clear; close all;
 
 T = 0.01;
 Ts = T/20;
-
 A = 1;
+
 % Se genera el vector de tiempo
 t = 0:Ts:T-Ts;
 
@@ -168,35 +168,84 @@ title("Salida del demodulador para s2(t) con ruido");
 legend("y1(t) Sin Ruido","y1(t) SNR=5dB","y2(t) Sin Ruido","y2(t) SNR=5dB",'location','northwest');
 sgtitle("Demodulación de las señales s1(t) y s2(t) con ruido (SNR=5dB)");
 
+% Representación de la demodulación para una señal con SNR=5dB
+figure;
+subplot(3,2,1);
+plot(t,s1.o,'lineWidth',2);
+hold on;
+plot(t,s1.snr_10dB,'lineWidth',2);
+grid minor;
+xlabel("t (s)");   
+xlim([0 T-Ts]);
+legend(["Sin ruido","SNR=10dB"],'Location','northeast');
+title("Señal de entrada s1(t) con ruido (SNR=10dB)");
+subplot(3,2,[3,5]);
+plot(t,y1_s1,"r--",'lineWidth',1);
+hold on;
+plot(t,y1.s1.snr_10dB,"r-o",'lineWidth',2);
+plot(t,y2_s1,"g--",'lineWidth',1);
+plot(t,y2.s1.snr_10dB,"g-*",'lineWidth',2);
+grid minor;
+xlim([0 T-Ts]);
+xlabel("t (s)");
+title("Salida del demodulador para s1(t) con ruido");
+legend("y1(t) Sin Ruido","y1(t) SNR=10dB","y2(t) Sin Ruido","y2(t) SNR=10dB",'location','northwest');
+subplot(3,2,2);
+plot(t,s2.o,'lineWidth',2);
+hold on;
+plot(t,s2.snr_10dB,'lineWidth',2);
+grid minor;
+xlabel("t (s)");
+xlim([0 T-Ts]);
+legend(["Sin ruido","SNR=10dB"],'Location','northeast');
+title("Señal de entrada s2(t) con ruido (SNR=10dB)");
+subplot(3,2,[4,6]);
+plot(t,y1_s2,"r--",'lineWidth',1);
+hold on;
+plot(t,y1.s2.snr_10dB,"r-o",'lineWidth',2);
+plot(t,y2_s2,"g--",'lineWidth',1);
+plot(t,y2.s2.snr_10dB,"g-*",'lineWidth',2);
+grid minor;
+xlim([0 T-Ts]);
+xlabel("t (s)");
+title("Salida del demodulador para s2(t) con ruido");
+legend("y1(t) Sin Ruido","y1(t) SNR=10dB","y2(t) Sin Ruido","y2(t) SNR=10dB",'location','northwest');
+sgtitle("Demodulación de las señales s1(t) y s2(t) con ruido (SNR=10dB)");
+
 %% 3. Salida del demodulador - Ejercicio 3.1
 
 clear; close all;
 
 % Parametros
-T = 10;
+T = 0.01;
 Ts = T/20;
 M = T/Ts; % Numero de muestras por simbolo
-Nsymb = 10000;
+Nsymb = 1000;
 SNR = 10;
+A = 1;
 
 % Se genera el vector de tiempo
 t = linspace(0,T,T/Ts);
 
 % Primera señal
-s1 = ones(1,length(t));
-s2 = [ones(1,length(t)/2) -ones(1,length(t)/2)];
+s1.o = ones(1,length(t));
+s2.o = [ones(1,length(t)/2) -ones(1,length(t)/2)];
+
+% Bases ortonormales phi1(t) y phi2(t)
+phi1 = s1.o/(A*sqrt(T));
+phi2 = s2.o/(A*sqrt(T));
 
 % Generamos la señal r(t) de simbolos s1(t) y s2(t)
 r.s1 = [];
 r.s2 = [];
 for i=1:Nsymb
-    r.s1 = [r.s1 s1];
-    r.s2 = [r.s2 s2];
+    r.s1 = [r.s1 s1.o];
+    r.s2 = [r.s2 s2.o];
 end
 
-% Añadir ruido blanco a la señal s1
+% Añadir ruido blanco a la señal r de s1s
 r.s1_noise = awgn(r.s1,SNR);
-% Añadir ruido blanco a la señal s2
+% Añadir ruido blanco a la señal r de s2s
 r.s2_noise = awgn(r.s2,SNR);
 
 % Llamada de forma iterativa a correlatorType
@@ -206,11 +255,11 @@ r1.s2 = [];
 r2.s2 = [];
 for i=1:Nsymb
     % Llamada a la función de correlación
-    [y1_s1,y2_s1] = correlatorType(T,Ts,r.s1_noise((i-1)*M+1:i*M));
+    [y1_s1,y2_s1] = correlatorType(phi1,phi2,Ts,r.s1_noise((i-1)*M+1:i*M));
     r1.s1 = [r1.s1 y1_s1];
     r2.s1 = [r2.s1 y2_s1];
     % Llamada a la función de correlación
-    [y1_s2,y2_s2] = correlatorType(T,Ts,r.s2_noise((i-1)*M+1:i*M));
+    [y1_s2,y2_s2] = correlatorType(phi1,phi2,Ts,r.s2_noise((i-1)*M+1:i*M));
     r1.s2 = [r1.s2 y1_s2];
     r2.s2 = [r2.s2 y2_s2];
 end
@@ -234,3 +283,13 @@ histogram(r2.s2)
 title("Histograma r2 s2")
 xlabel("Valores r2")
 sgtitle("Histogramas r(t)");
+
+% Se genera el vector de tiempo
+t = 0:Ts:Nsymb*T-Ts;
+
+figure;
+plot(t(1:100),r1.s1(1:100));
+hold on;
+plot(t(1:100),r1.s2(1:100));
+plot(t(1:100),r2.s1(1:100));
+plot(t(1:100),r2.s2(1:100));
