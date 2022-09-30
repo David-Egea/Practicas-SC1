@@ -4,8 +4,6 @@ Sistemas de Comunicación I
 Autores:
 * *David Cocero Quintanilla*  
 * *David Egea Hernández*
-
-
 ---
 El objetivo de esta primera práctica es diferentes técnicas de demodulación de señales digitales estudiadas en teoría. Además se analizará el efecto de la presencia de ruido en el canal. 
 
@@ -22,8 +20,8 @@ $$ϕ_2 (t)={(s2 (t)) \over √T}$$
 
 Teniendo en cuenta estas bases, los coeficientes para los simbolos s1 y s2 son:
 
-$$s1= \sqrt T [1 0]$$       
-$$s2= \sqrt T [0 1]$$ 
+$$s1= \sqrt T *[1,0]$$       
+$$s2= \sqrt T *[0,1]$$ 
 
 ## 2. Demodulador de un símbolo
 
@@ -33,20 +31,18 @@ Esta parte se centra en la implementación del demodulador por correlación.
 
 ### Ejercicio 2.1
 ---
-Representación temporal del vector de salida de ambos correladores para los dos posibles símbolos recibidos (i.e. s1 y s2). Es decir, los valores de y_n (t) para n = 1,¿Son los resultados lógicos? Coméntelos. Quizá sea una buena idea utilizar la función subplot para presentar los resultados. Asegúrese de que todas las gráficas tienen los mismos ejes para facilitar la comparación.
+***Representación temporal del vector de salida de ambos correladores para los dos posibles símbolos recibidos (i.e. s1 y s2). Es decir, los valores de y_n (t) para n = 1,¿Son los resultados lógicos? Coméntelos. Quizá sea una buena idea utilizar la función subplot para presentar los resultados. Asegúrese de que todas las gráficas tienen los mismos ejes para facilitar la comparación.***
    
-Para el simbolo s1, la salida del demodulador de phi1 subirá de forma constante hasta llegar a su valor final de 0.1 y la salida del demodulador de phi2 sube hasta la mitad del periodo y desde ahí baja hasta el cero. Este resultado tiene sentido ya que como hemos comentado, los coeficientes de s1 son $\sqrt T= \sqrt 0.01=0.1$ y 0 respectivamente, que se corresponden con los valores finales de los demoduladores.
+Para el símbolo s1, la salida del demodulador de phi1 subirá de forma constante hasta llegar a su valor final de 0.1 y la salida del demodulador de phi2 sube hasta la mitad del periodo y desde ahí baja hasta el cero. Este resultado tiene sentido ya que como hemos comentado, los coeficientes de s1 son $\sqrt T= \sqrt 0.01=0.1$ y 0 respectivamente, que se corresponden con los valores finales de los demoduladores.
 
-!["Correlacion Demodulador s1"](Practica1/../images/2_1_s1.jpg "Correlacion Demodulador s1")
+!["Coeficientes demodulación s1 y s2"](Practica1/../images/2_1_demodulacion.png "Coeficientes demodulación s1 y s2")
 
-Analogamente, para el simbolo s2, la salida del demodulador de phi1 subirá hasta T/2 para despues bajar a cero y la salida del demodulador de phi2 subirá durante todo el periodo hasta 0.1. También es un resultado lógico ya que los coeficientes de s2 son 0 y $\sqrt T= \sqrt 0.01=0.1$ , idénticos a la muestra final de las salidas de los demoduladores.
-
-!["Correlacion Demodulador s2"](Practica1/../images/2_1_s2.jpg "Correlacion Demodulador s2")
+Análogamente, para el simbolo s2, la salida del demodulador de phi1 subirá hasta T/2 para despues bajar a cero y la salida del demodulador de phi2 subirá durante todo el periodo hasta 0.1. También es un resultado lógico ya que los coeficientes de s2 son 0 y $\sqrt T= \sqrt 0.01=0.1$ , idénticos a la muestra final de las salidas de los demoduladores.
 
 
-¿Cuál sería el instante temporal idóneo para hacer el muestreo y enviar la señal al detector?
+***¿Cuál sería el instante temporal idóneo para hacer el muestreo y enviar la señal al detector?***
 
-Lo mejor sería hacer el muestreo en el punto final, ya que en este punto se hace la integral durante todo el periodo. Si vemos las salidas de los demoduladores, estas  suben o bajan hasta llegar al coeficiente real en la última muestra.  
+Lo mejor sería hacer el muestreo en el punto final, ya que en este punto se hace la integral durante todo el periodo. Si vemos las salidas de los demoduladores, estas  suben o bajan hasta llegar al coeficiente real en la **última muestra**.  
 
 ---
 ### Ejercicio 2.2
@@ -57,12 +53,19 @@ En este segundo ejercicio se introduce ruido blanco gaussiano a la señal. Recor
 
 Para añadir el ruido a la señal hemos empleado la función `awgn` que ofrece la [*Communications Toolbox*](https://es.mathworks.com/products/communications.html) de MATLAB <img src="https://logos-marcas.com/wp-content/uploads/2020/12/MATLAB-Logo.png" alt="drawing" width="30"/>
 
-Aquí vemos una comparación de cómo el ruido afecta a los simbolos s1 y s2 para distintos valores de SNR. En este caso veremos qué sucede en el caso de usar 5,10 y 15 dB de SNR.
+Aquí vemos una comparación de cómo el ruido afecta a los simbolos s1 y s2 para distintos valores de SNR. En este caso veremos qué sucede en el caso de usar 1, 3 y 5 dB de SNR.
 
+!["Comparativa señales con ruido"](Practica1/../images/2_2_comparativa_ruido.png "Comparativa señales con ruido")
 
-!["Comparativa de la señal entrada con y sin ruido"](Practica1/../images/2_2_compartiva_con_y_sin_ruido.jpg "Comparativa de la señal entrada con y sin ruido")
+En primer caso de la señal con SNR de 1dB es posible comprobar como la variación con respecto a la señal sin ruido es muy notable (gráficas superiores). La salida de los demoduladores difiere en gran medida en comparación con el caso ideal (en discontinua), especialmente para el caso del coeficiente no nulo (y1 para s1 e y2 para s2). 
 
-En la primera imagen se ve s1 original junto con sus modificaciones por el ruido y en la segunda aparece s2 con sus variantes. Se puede apreciar como 10 y 15 dB no afectan tanto pero con 5 dB la señal se distorsiona considerablemente. Aún así los picos de la señal no varian lo suficiente para que el detector  tenga problemas confundiéndose de simbolo entre s1 y s2. Por ello en este apartado seleccionaremos 5dB de SNR, ya que será el modo de transmisión más barato que sigue siendo correcto.
+!["Coeficientes demodulación s1 y s2 con SNR de 1dB"](Practica1/../images/2_2_demodulacion_snr_1dB.png "Coeficientes demodulación s1 y s2 con SNR de 1dB")
+
+En segundo lugar, la señal con SNR de 3dB posee 
+
+!["Coeficientes demodulación s1 y s2 con SNR de 3dB"](Practica1/../images/2_2_demodulacion_snr_3dB.png "Coeficientes demodulación s1 y s2 con SNR de 3dB")
+
+!["Coeficientes demodulación s1 y s2 con SNR de 5dB"](Practica1/../images/2_2_demodulacion_snr_5dB.png "Coeficientes demodulación s1 y s2 con SNR de 5dB")
 
 Abajo aparecen representadas las salidas de los 2 demoduladores para s1 (primera columna) y s2 (segunda columna)
 
@@ -82,6 +85,6 @@ Además elegiremos un valor de Nsymb de 1000 para poder representar bien los his
 
 Generamos los histogramas de la figura de abajo, con la salida de los demoduladores para s1 en la primera columna y para s2 en la segunda.
 
-!["Histogramas"](Practica1/../images/3_histogramas.jpg "Histogramas")
+!["Histograma 1dB"](Practica1/../images/3_histogramas_1dB.jpg "Histograma 1dB")
 
 Los cuatro histogramas parecen tener una distribución gausiana, con media en el valor real de los coeficientes: [1 1] para s1 y [1 -1] para s2. Estos resultados parecen correctos ya que el ruido blanco gausiano tiene distribución gausiana, así que a partir de un numero de muestras adecuado (1000 en nuestro caso), los histogramas tendrán una distribución similar.
