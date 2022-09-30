@@ -57,34 +57,37 @@ Aquí vemos una comparación de cómo el ruido afecta a los simbolos s1 y s2 par
 
 !["Comparativa señales con ruido"](Practica1/../images/2_2_comparativa_ruido.png "Comparativa señales con ruido")
 
-En primer caso de la señal con SNR de 1dB es posible comprobar como la variación con respecto a la señal sin ruido es muy notable (gráficas superiores). La salida de los demoduladores difiere en gran medida en comparación con el caso ideal (en discontinua), especialmente para el caso del coeficiente no nulo (y1 para s1 e y2 para s2). 
+En primer caso de las señales con SNR de 1dB es posible comprobar como la variación con respecto a las señales sin ruido es muy notable (gráficas superiores). La salida de los demoduladores difiere en gran medida en comparación con el caso ideal (en discontinua), especialmente para el caso del coeficiente no nulo (y1 para s1 e y2 para s2). 
 
 !["Coeficientes demodulación s1 y s2 con SNR de 1dB"](Practica1/../images/2_2_demodulacion_snr_1dB.png "Coeficientes demodulación s1 y s2 con SNR de 1dB")
 
-En segundo lugar, la señal con SNR de 3dB posee 
+En segundo lugar, las señales con SNR de 3dB difieren en menor medida en comparación con los casos anteriores (1dB). Por este motivo, las gráficas de evolución de los coeficientes de la demodulación se aproximan más a las originales (sin ruido). 
 
 !["Coeficientes demodulación s1 y s2 con SNR de 3dB"](Practica1/../images/2_2_demodulacion_snr_3dB.png "Coeficientes demodulación s1 y s2 con SNR de 3dB")
 
+En tercer lugar, las señales con SNR de 5dB son las que mejores resultados arrojan, como era de esperar al tener una menor proporción de ruido. 
+
 !["Coeficientes demodulación s1 y s2 con SNR de 5dB"](Practica1/../images/2_2_demodulacion_snr_5dB.png "Coeficientes demodulación s1 y s2 con SNR de 5dB")
 
-Abajo aparecen representadas las salidas de los 2 demoduladores para s1 (primera columna) y s2 (segunda columna)
-
-!["Salida demodulador"](Practica1/../images/2_2_salida_demodulador.jpg "Salida demodulador")
-
-Vemos que ahora el ruido hace que los coeficientes a la salida de los demoduladores no sean enteros. Para s1, y1 estará entorno a 1.3 mientras que y2 está sobre el 0.85. Con s2 ocurrirá lo mismo, aunque se desvían menos; con y1 situandose en 0.88 y y2 en 1.13
-De todas formas, aunque los coeficientes no salgan enteros, el detector aproximará al simbolo más cercano por lo que la transmisión será correcta.
+Cabe destacar que en todos los casos analizados es posible comprobar como existe una tendencia en la salidad de los demoduladores hacia unos ciertos valores. Estos valores son los coeficientes relativos a las bases ortonormales que fueron calculados teóricamente con anterioridad **([0.1 y 0] para s1(t) y [0 y 0.1] para s2(t))**. Como se ha mencionado antes, cuanto mayor es la SNR mayor es la aproximación de la salida a dichos valores. 
 
 
 ## 3. Salida del demodulador 
 
 > Este ejercio se encuentra en la sección `3. Salida del demodulador - Ejercicio 3.1` en el script principal `main.m`
 
-En este caso seguiremos con el mismo nivel de 5dB SNR para el ruido blanco que añadimos. Este se debe a que es el minimo SNR que se permite sin que haya errores de transmisión.
+Ahora, en este apartado se ha pruebado la transmisión de 10000 símbolos, almacenando la última muestra de la salida de los demoduladores para cada símbolo. Para ello, se muestrea el vector de evolución de los coeficientes del demodulador en los instantes n*T, siendo *n* un número entero y *T* el período de símbolo. 
 
-Además elegiremos un valor de Nsymb de 1000 para poder representar bien los histogramas.
+Para los tres niveles de SNR ya analizados en el anterior ejercicio, se han representado los histogramas de los valores obtenidos de los coeficientes. En todos los casos, se aprecia como las distribuciones están centradas en 0 y 0.1, valores correspondientes con los coeficientes ideales de los símbolos. Sin embargo, como las señales introducidas no son ideales, los valores se encuentran siguiendo una distribución gaussiana, por ser el ruido introducido *ruido blanco gaussiano*.
 
-Generamos los histogramas de la figura de abajo, con la salida de los demoduladores para s1 en la primera columna y para s2 en la segunda.
+En el caso de `SNR = 1db`, se puede apreciar que las colas de ambas distribuciones se solapan entorno a *0.05*. Los valores que se encuentran en esta región pueden llegar a ser identificados incorrectamente por el detector. Utilizar este nivel de señal-ruido implica asumir una cierta tasa de error de símbolo no despreciable. 
 
-!["Histograma 1dB"](Practica1/../images/3_histogramas_1dB.jpg "Histograma 1dB")
+!["Histograma 1dB"](Practica1/../images/3_histograma_1dB.png "Histograma 1dB")
 
-Los cuatro histogramas parecen tener una distribución gausiana, con media en el valor real de los coeficientes: [1 1] para s1 y [1 -1] para s2. Estos resultados parecen correctos ya que el ruido blanco gausiano tiene distribución gausiana, así que a partir de un numero de muestras adecuado (1000 en nuestro caso), los histogramas tendrán una distribución similar.
+Como se muestra en la gráfica del caso de `SNR = 3db`, las distribuciones parecen encontrarse demasiado próximas, ocurriendo un solapamiento mínimo en sus colas. 
+
+!["Histograma 3dB"](Practica1/../images/3_histograma_3dB.png "Histograma 3dB")
+
+Finalmente, el caso de `SNR = 5db` muestra que este nivel de señal-ruido parece ser suficiente para evitar el indeseado solapamiento, al encontrarse ambas distribuiones lo suficientemente espaciadas entre sí. 
+
+!["Histograma 5dB"](Practica1/../images/3_histograma_5dB.png "Histograma 5dB")
