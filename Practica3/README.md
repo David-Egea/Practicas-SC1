@@ -11,7 +11,7 @@ Autores:
 
 En este apartado se analiza el comportamiento de cuatro filtros paso bajo diferentes.
 
-**1. Comente la bondad relativa de los cuatro filtros para la transmisión en banda base en función de los criterios que estime conveniente.**
+### **1. Comente la bondad relativa de los cuatro filtros para la transmisión en banda base en función de los criterios que estime conveniente.**
 
 La respuesta impulsional de todos y cada uno de los filtros puede expresarse como un función de seno cardinal o *sinc*:
 
@@ -42,7 +42,7 @@ Sobre la **banda de rechazo**:
 - Filtro α=0.5: la banda de #TODO: Terminar la explicacion
 - Filtro α=1 (coseno alzado perfecto): 
 
-**2. Comente los resultados de las gráficas 1 y 2. A la vista de lo que está programado, ¿qué es el ancho de banda equivalente de ruido de los filtros?**
+### **2. Comente los resultados de las gráficas 1 y 2. A la vista de lo que está programado, ¿qué es el ancho de banda equivalente de ruido de los filtros?**
 
 El ancho de banda equivalente de ruido es el ancho de banda de un filtro ideal rectangular que daría el mismo valor de ruido cuadrático medio (la misma potencia normalizada de ruido) en la salida frente a un ruido blanco en la entrada.
 
@@ -50,7 +50,7 @@ Se calcula haciendo la integral de la respuesta en frequencia del filtro al cuad
 
 # 2.	Estudio del ISI sin ruido por medio de diagramas de ojo
 
-**3.	Comente las Figuras 3, 4 y 5.**  
+### **3.	Comente las Figuras 3, 4 y 5.**
 
 En la primera Figura 3 se observa un vector de muestras generadas aleatoriamente, que ha sido centrado en su propia secuencia. 
 
@@ -60,14 +60,25 @@ La Figura 4 muestra la salida de los cuatro filtros al vector de muestras de la 
 
 Cuando se produce un único valor, es decir, no se transmite el mismo valor de forma consecutiva durante varias muestras, el filtro de ISI reacciona con un sobreimpulso a dicho valor, superando la amplitud del pulso original introducido. En caso de que sean varias las muestras del mismo valor transmitidas consecutivamente, el filtro de ISI reacciona de forma opuesta. Este efecto contrario se traduce en valores de salida significativamente inferiores a los valores de entrada.  
 
-Con respecto al resto de filtros, el efecto de sobreimpulso se manifiesta claramente cuando se envía el mismo símbolo de forma consecutiva, siendo más pronunciado cuanto menor sea el factor de *roll-off* del filtro.
+Con respecto al resto de filtros, el efecto de la sobretensión se manifiesta claramente cuando se envía el mismo símbolo de forma consecutiva, siendo más pronunciado cuanto menor sea el factor de *roll-off* del filtro.
 
-!["Figura 4: Respuesta temporal del filtro"](Practica3/../images/3_figura_3.jpg "Vector de muestras eleatorias")
+!["Figura 4: Respuesta temporal retardada de los 4 filtros"](Practica3/../images/3_figura_4.jpg "Respuesta temporal retardada de los 4 filtros")
 
-En la Figura 5, se puede ver con mayor claridad el comportamiento analizado, al haber eliminado el retardo introducido por el filtro al inicio y al final de la secuencia. Además se muestra en la figura el vector de entrada utilizado.
+En la Figura 5, se puede ver con mayor claridad el comportamiento analizado, al haber eliminado el retardo introducido por el filtro al inicio y al final de la secuencia. Además se muestra en la figura el vector de entrada utilizado. #Coment: comparacion con las muestras...
+
+!["Figura 5: Respuesta temporal ajustada de los 4 filtros"](Practica3/../images/3_figura_5.jpg "Respuesta temporal ajustada de los 4 filtros")
 
 
-**4.	Relacione los sobreimpulsos con el valor de α. A nivel cualitativo, ¿qué impacto puede tener el sobreimpulso sobre la BER, cuando en lo filtros entra no solamente señal, sino también ruido ?**
+### **4.	Relacione los sobreimpulsos con el valor de α. A nivel cualitativo, ¿qué impacto puede tener el sobreimpulso sobre la BER, cuando en lo filtros entra no solamente señal, sino también ruido?**
 
+En el caso que concierne, el efecto del sobreimpulso no supone un peligro ni tiene un afectación directa sobre el BER, al ser un sistema de dos posibles símbolos. En este caso, como la sobretensión añade más amplitud a la señal, es incluso menor probable que se cometa un identificación errónea de un símbolo. 
+
+Sin embargo, para alfabetos mayores, es decir, con una mayor cantidad de símbolos, este efecto si tiene afectación negativa sobre el BER. Al aumentar el nivel de la señal, esta puede llegar a ser confundida como el símbolo siguiente, de modo que la tasa de error aumentará. 
+
+Por otro lado, la existencia de ruido agravará el error cometido por el filtro.
+
+### **5.	¿Cómo se generan los diagramas de ojo?**
+
+!["Diagrama de ojo "](Practica3/../images/5_ojo_alpha_1.jpg "Respuesta temporal ajustada de los 4 filtros")
 
 
