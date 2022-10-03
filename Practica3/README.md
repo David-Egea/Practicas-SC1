@@ -39,7 +39,7 @@ Sobre la **banda de transición**:
 
 Sobre la **banda de rechazo**:
 - Filtro α=0 (ideal): La banda de rechazo se encuentra a partir de 0.6 Hz. 
-- Filtro α=0.5: la banda de 
+- Filtro α=0.5: la banda de #TODO: Terminar la explicacion
 - Filtro α=1 (coseno alzado perfecto): 
 
 **2. Comente los resultados de las gráficas 1 y 2. A la vista de lo que está programado, ¿qué es el ancho de banda equivalente de ruido de los filtros?**
@@ -47,3 +47,27 @@ Sobre la **banda de rechazo**:
 El ancho de banda equivalente de ruido es el ancho de banda de un filtro ideal rectangular que daría el mismo valor de ruido cuadrático medio (la misma potencia normalizada de ruido) en la salida frente a un ruido blanco en la entrada.
 
 Se calcula haciendo la integral de la respuesta en frequencia del filtro al cuadrado entre 2 y despues se normaliza. 
+
+# 2.	Estudio del ISI sin ruido por medio de diagramas de ojo
+
+**3.	Comente las Figuras 3, 4 y 5.**  
+
+En la primera Figura 3 se observa un vector de muestras generadas aleatoriamente, que ha sido centrado en su propia secuencia. 
+
+!["Figura 3: Vector de muestras eleatorias"](Practica3/../images/3_figura_3.jpg "Vector de muestras eleatorias")
+
+La Figura 4 muestra la salida de los cuatro filtros al vector de muestras de la anterior figura. Se puede comprobar como, por efecto de la convolución, los primeros valores reflejados se encuentran retardos 50 muestras (la mitad de longitud del filtro). 
+
+Cuando se produce un único valor, es decir, no se transmite el mismo valor de forma consecutiva durante varias muestras, el filtro de ISI reacciona con un sobreimpulso a dicho valor, superando la amplitud del pulso original introducido. En caso de que sean varias las muestras del mismo valor transmitidas consecutivamente, el filtro de ISI reacciona de forma opuesta. Este efecto contrario se traduce en valores de salida significativamente inferiores a los valores de entrada.  
+
+Con respecto al resto de filtros, el efecto de sobreimpulso se manifiesta claramente cuando se envía el mismo símbolo de forma consecutiva, siendo más pronunciado cuanto menor sea el factor de *roll-off* del filtro.
+
+!["Figura 4: Respuesta temporal del filtro"](Practica3/../images/3_figura_3.jpg "Vector de muestras eleatorias")
+
+En la Figura 5, se puede ver con mayor claridad el comportamiento analizado, al haber eliminado el retardo introducido por el filtro al inicio y al final de la secuencia. Además se muestra en la figura el vector de entrada utilizado.
+
+
+**4.	Relacione los sobreimpulsos con el valor de α. A nivel cualitativo, ¿qué impacto puede tener el sobreimpulso sobre la BER, cuando en lo filtros entra no solamente señal, sino también ruido ?**
+
+
+
