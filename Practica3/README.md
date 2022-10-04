@@ -85,30 +85,25 @@ Se trata en definitiva de una herramienta para analizar el comportamiento de enl
 
 Algunos de los factores más relevantes de un diagrama de ojo son:  
 
-* Apertura vertical. Es la distancia entre ambos niveles lógicos (1 y-1). Es un indicador de la presencia de ruido o interferencia entre símbolos. 
-* Apertura horizontal. Es la distancia horizontal entre las pendientes de apertura y cierre, en el nivel del cruce de amplitud (0). 
+* Apertura vertical (amplitud). Es la distancia entre ambos niveles lógicos (1 y-1). Es un indicador de la presencia de ruido o interferencia entre símbolos. 
+* Apertura horizontal (tiempo). Es la distancia horizontal entre las pendientes de apertura y cierre, en el nivel del cruce de amplitud (0). 
 * Pendiente. Indica la sensibilidad del sistema al error cometido en el restablecimiento del sincronismo en el caso de producirse un error en el instante de muestreo.
 
 ### **6. Por inspección sobre las gráficas que se generan, indicar las aperturas de los diagramas de ojo en amplitud y tiempo.**
 
-Para el caso del primer diagrama de ojo, se puede observar como al ser el filtro de α=1, los simbolos superpuestos son muy similares. Además en este caso apenas aparecen sobreimpulsos.
-
-Las amplitud vertical y la horizontal vale 1 en ambos casos.
+Para el caso del primer diagrama de ojo, se puede observar como al ser el filtro de α=1, los simbolos superpuestos son muy similares. Además en este caso apenas aparecen sobreimpulsos.Las apertura de amplitud definida anteriormente vale 2 mientras que la de tiempo vale 1.
 
 !["Diagrama de ojo filtro de α=1"](Practica3/../images/5_ojo_alpha_1.jpg "Diagrama de ojo α=1")
 
-Para α=0.5 vemos que la superposición es más imperfecta, los simbolos en muchos casos no coinciden. Mientras que la apertura vertical del ojo sigue valiendo 1, se puede apreciar como la apertura horizontal del ojo disminuye y pasa a valer entorno a 0.8
-
+Para α=0.5 vemos que la superposición es más imperfecta, los simbolos en muchos casos no coinciden. Mientras que la apertura vertical del ojo sigue valiendo 2, se puede apreciar como la apertura horizontal del ojo disminuye y pasa a valer entorno a 0.8 segundos.
 
 !["Diagrama de ojo filtro de α=0.5"](Practica3/../images/5_ojo_alpha_0_5.jpg "Diagrama de ojo filtro α=0.5")
 
-
-
+En el caso de α=0 la superposición de símbolos es incluso más imprecisa. Respecto a la apertura, la vertical se sigue manteniendo en 2, pero la horizontal se vuelve a reducir hasta unos 0.6 segundos
 !["Diagrama de ojo filtro de α=0"](Practica3/../images/5_ojo_alpha_0.jpg "Diagrama de ojo filtro α=0")
 
+Llegamos finalmente al peor filtro, el que tiene ISI. Aquí el diagrama parece que tiende a cerrarse verticalmente. Al haber distorsión, la apertura vertical será menor de 2, entorno 1.5. Esto significa que existirá interferencias entre símbolos que afectan Si tenemos menos apertura vertical,la transmisión será menos resistente al ruido.
 
 !["Diagrama de ojo filtro ISI"](Practica3/../images/5_ojo_alpha_isi.jpg "Diagrama de ojo filtro ISI")
 
-Por otro lado, como en este caso hay ISI, el diagrama parece que tiende a cerrarse verticalmente. Al haber distorsión, la apertura vertical será menor que en los otros casos. Esto significa que existirá interferencias entre símbolos que afectan Si tenemos menos apertura vertical,la transmisión será menos resistente al ruido.
 
-Para una transmisión sin errores en ausencia de ruido, el ojo debe mantener cierta apertura vertical (a), o en caso contrario existirán señales de interferencia entre símbolos que provocarán errores. Cuando el ojo no esté totalmente cerrado, la interferencia entre símbolos reducirá el valor del ruido aditivo admisible. Por tanto, cuanto mayor apertura vertical, mayor inmunidad frente al ruido. El instante óptimo de muestreo será el punto de máxima apertura vertical del ojo, pero esto nunca puede ser logrado de forma precisa por un sistema práctico de recuperación de sincronismo. Por eso, la apertura horizontal del ojo (b) es también importante desde el punto de vista práctico. Cuanto mayor sea la pendiente (c), mayor sensibilidad tendrá el sistema a errores cometidos en la recuperación del sincronismo (errores en el cálculo del instante de muestreo).*
