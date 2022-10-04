@@ -69,7 +69,7 @@ En la Figura 5, se puede ver con mayor claridad el comportamiento analizado, al 
 !["Figura 5: Respuesta temporal ajustada de los 4 filtros"](Practica3/../images/3_figura_5.jpg "Respuesta temporal ajustada de los 4 filtros")
 
 
-### **4.	Relacione los sobreimpulsos con el valor de α. A nivel cualitativo, ¿qué impacto puede tener el sobreimpulso sobre la BER, cuando en lo filtros entra no solamente señal, sino también ruido?**
+### **4. Relacione los sobreimpulsos con el valor de α. A nivel cualitativo, ¿qué impacto puede tener el sobreimpulso sobre la BER, cuando en lo filtros entra no solamente señal, sino también ruido?**
 
 En el caso que concierne, el efecto del sobreimpulso no supone un peligro ni tiene un afectación directa sobre el BER, al ser un sistema de dos posibles símbolos. En este caso, como la sobretensión añade más amplitud a la señal, es incluso menor probable que se cometa un identificación errónea de un símbolo. 
 
@@ -77,8 +77,38 @@ Sin embargo, para alfabetos mayores, es decir, con una mayor cantidad de símbol
 
 Por otro lado, la existencia de ruido agravará el error cometido por el filtro.
 
-### **5.	¿Cómo se generan los diagramas de ojo?**
+### **5. ¿Cómo se generan los diagramas de ojo?**
 
-!["Diagrama de ojo "](Practica3/../images/5_ojo_alpha_1.jpg "Respuesta temporal ajustada de los 4 filtros")
+Como es bien sabido, los diagramas de ojo se generan mediante la superposión de símbolos sucesivos ajustando temporalmente los intervalos entre los mismos. Típicamente esto se logra introduciendo retardos entre los distintos símbolos, de manera que coincidan todos en el mismo instante.  
+
+Se trata en definitiva de una herramienta para analizar el comportamiento de enlaces de comunicaciones, ya que indican la forma, el nivel de ruido, los desfases y la distorsión de cada sistema. 
+
+Algunos de los factores más relevantes de un diagrama de ojo son:  
+
+* Apertura vertical. Es la distancia entre ambos niveles lógicos (1 y-1). Es un indicador de la presencia de ruido o interferencia entre símbolos. 
+* Apertura horizontal. Es la distancia horizontal entre las pendientes de apertura y cierre, en el nivel del cruce de amplitud (0). 
+* Pendiente. Indica la sensibilidad del sistema al error cometido en el restablecimiento del sincronismo en el caso de producirse un error en el instante de muestreo.
+
+### **6. Por inspección sobre las gráficas que se generan, indicar las aperturas de los diagramas de ojo en amplitud y tiempo.**
+
+Para el caso del primer diagrama de ojo, se puede observar como al ser el filtro de α=1, los simbolos superpuestos son muy similares. Además en este caso apenas aparecen sobreimpulsos.
+
+Las amplitud vertical y la horizontal vale 1 en ambos casos.
+
+!["Diagrama de ojo filtro de α=1"](Practica3/../images/5_ojo_alpha_1.jpg "Diagrama de ojo α=1")
+
+Para α=0.5 vemos que la superposición es más imperfecta, los simbolos en muchos casos no coinciden. Mientras que la apertura vertical del ojo sigue valiendo 1, se puede apreciar como la apertura horizontal del ojo disminuye y pasa a valer entorno a 0.8
 
 
+!["Diagrama de ojo filtro de α=0.5"](Practica3/../images/5_ojo_alpha_0_5.jpg "Diagrama de ojo filtro α=0.5")
+
+
+
+!["Diagrama de ojo filtro de α=0"](Practica3/../images/5_ojo_alpha_0.jpg "Diagrama de ojo filtro α=0")
+
+
+!["Diagrama de ojo filtro ISI"](Practica3/../images/5_ojo_alpha_isi.jpg "Diagrama de ojo filtro ISI")
+
+Por otro lado, como en este caso hay ISI, el diagrama parece que tiende a cerrarse verticalmente. Al haber distorsión, la apertura vertical será menor que en los otros casos. Esto significa que existirá interferencias entre símbolos que afectan Si tenemos menos apertura vertical,la transmisión será menos resistente al ruido.
+
+Para una transmisión sin errores en ausencia de ruido, el ojo debe mantener cierta apertura vertical (a), o en caso contrario existirán señales de interferencia entre símbolos que provocarán errores. Cuando el ojo no esté totalmente cerrado, la interferencia entre símbolos reducirá el valor del ruido aditivo admisible. Por tanto, cuanto mayor apertura vertical, mayor inmunidad frente al ruido. El instante óptimo de muestreo será el punto de máxima apertura vertical del ojo, pero esto nunca puede ser logrado de forma precisa por un sistema práctico de recuperación de sincronismo. Por eso, la apertura horizontal del ojo (b) es también importante desde el punto de vista práctico. Cuanto mayor sea la pendiente (c), mayor sensibilidad tendrá el sistema a errores cometidos en la recuperación del sincronismo (errores en el cálculo del instante de muestreo).*
