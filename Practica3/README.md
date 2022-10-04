@@ -130,13 +130,22 @@ Comparar codigo generación
 
 ### **8. Razone la relación numérica que debe haber entre la relación señal ruido antes de los filtros con la de después de los filtros.**
 
+En nuestro ejemplo en la entrada de los filtros tenemos nuestra señal más un cierto nivel de ruido (SNR=15). Este ruido se define como ruido blanco gaussiano, con densidad de potencia espectral plana, por lo que los filtros paso bajo eliminarán la parte de este ruido situado en frecuencias altas. La señal por el contrario será en banda base, de forma que no debería perder un nivel significativo de potencia por el filtrado, aún habiendo cierta distorsión. 
+
+Por lo tanto, si la potencia de la señal se mantiene prácticamente estable pero el ruido disminuye considerablemente, la relación señal ruido después de los filtros será mayor.
 
 # 4. Efecto del ISI en la tasa de error 
 *En este apartado se calcula la tasa de error de transmisión que se obtiene cuando la señal que se introduce en los filtros está contaminada con ruido blanco y gausiano.*
 
 ### **9. Analice los resultados obtenidos en la figura, y relaciónelos con los resultados que apliquen de apartados anteriores.**
 
+Se aprecia que para una determinada SNR el filtro ISI tiene considerablemente más BER. Este resultado era de esperar ya que por supuesto habrá interferencias entre símbolos provocando que ciertos símbolos se identifiquen incorrectamente. Esto se puede relacionar con su diagrama de ojo donde deciamos que la apertura de amplitud era menor que en los otros casos, haciendolo más propenso a errores.
+
+Para los otros filtros, destacamos que cuanto mayor sea el alfa menor es el error de bit para una cierta SNR. Esta conclusión concuerda con lo visto en la series temporales del apartado 2, donde los filtros de menor alfa tenían más sobreimpulsos, lo que lleva a cometer más errores. 
+Además en los diagramas de ojo se veía como para los filtros de menor alfa la superposición de símbolos era más imprecisa, llevando a obtener una menor amplitud de tiempo.
+
 !["Relación BER-SNR para los 4 filtros"](Practica3/../images/9_snr_ber_filtros.jpg "Relación BER-SNR para los 4 filtros")
+
 
 # 5. Efecto del ISI en la tasa de error cuando además de ruido blanco hay error en la elección de los instantes de muestreo
 
