@@ -100,10 +100,44 @@ Para α=0.5 vemos que la superposición es más imperfecta, los simbolos en much
 !["Diagrama de ojo filtro de α=0.5"](Practica3/../images/5_ojo_alpha_0_5.jpg "Diagrama de ojo filtro α=0.5")
 
 En el caso de α=0 la superposición de símbolos es incluso más imprecisa. Respecto a la apertura, la vertical se sigue manteniendo en 2, pero la horizontal se vuelve a reducir hasta unos 0.6 segundos
+
 !["Diagrama de ojo filtro de α=0"](Practica3/../images/5_ojo_alpha_0.jpg "Diagrama de ojo filtro α=0")
 
-Llegamos finalmente al peor filtro, el que tiene ISI. Aquí el diagrama parece que tiende a cerrarse verticalmente. Al haber distorsión, la apertura vertical será menor de 2, entorno 1.5. Esto significa que existirá interferencias entre símbolos que afectan Si tenemos menos apertura vertical,la transmisión será menos resistente al ruido.
+Llegamos finalmente al peor filtro, el que tiene ISI. Aquí el diagrama parece que tiende a cerrarse verticalmente. Al haber distorsión, la apertura vertical será menor de 2, entorno 1.5. Esto significa que existirá interferencias entre símbolos que afectan si tenemos menos apertura vertical, la transmisión será menos resistente al ruido.
 
 !["Diagrama de ojo filtro ISI"](Practica3/../images/5_ojo_alpha_isi.jpg "Diagrama de ojo filtro ISI")
 
 
+# 3. Efecto del ruido en el diagrama de ojo  
+
+### **7. Indique lo que se realiza en este apartado y los resultados que se obtienen. Realice una comparación entre código y resultados del apartado con los del apartado anterior.**
+
+En este apartado se introduce un determinado nivel de ruido a las señales, ruido blanco gaussiano. 
+
+*Mencionar que se estrecha tanto la apertura vertical como la horizontal por el efecto del ruido añadido.*
+
+Para un nivel de SNR de 15dB:
+
+!["Diagrama de ojo filtro con ruido de α=1 para SNR de 15dB"](Practica3/../images/7_ojo_alpha_1_snr_15.jpg "Diagrama de ojo filtro con ruido de α=1 para SNR de 15dB")
+
+!["Diagrama de ojo filtro con ruido de α=0.5 para SNR de 15dB"](Practica3/../images/7_ojo_alpha_0_5_snr_15.jpg "Diagrama de ojo filtro con ruido de α=0.5 para SNR de 15dB")
+
+!["Diagrama de ojo filtro con ruido de α=0 para SNR de 15dB"](Practica3/../images/7_ojo_alpha_0_snr_15.jpg "Diagrama de ojo filtro con ruido de α=0 para SNR de 15dB"")
+
+!["Diagrama de ojo filtro con ruido con ISI para SNR de 15dB"](Practica3/../images/7_ojo_alpha_isi_snr_15.jpg "Diagrama de ojo filtro con ruido e ISI para SNR de 15dB")
+
+Comparar codigo generación 
+
+### **8. Razone la relación numérica que debe haber entre la relación señal ruido antes de los filtros con la de después de los filtros.**
+
+
+# 4. Efecto del ISI en la tasa de error 
+*En este apartado se calcula la tasa de error de transmisión que se obtiene cuando la señal que se introduce en los filtros está contaminada con ruido blanco y gausiano.*
+
+### **9. Analice los resultados obtenidos en la figura, y relaciónelos con los resultados que apliquen de apartados anteriores.**
+
+!["Relación BER-SNR para los 4 filtros"](Practica3/../images/9_snr_ber_filtros.jpg "Relación BER-SNR para los 4 filtros")
+
+# 5. Efecto del ISI en la tasa de error cuando además de ruido blanco hay error en la elección de los instantes de muestreo
+
+*Este apartado está vacío. Copie en él el código del apartado 4, y a continuación modifíquelo como crea conveniente para introducir errores en los instantes de muestreo. Ejecutar el código modificado y comentar los resultados obtenidos, en comparación con los del apartado anterior.*
