@@ -57,7 +57,7 @@ Si hubiera que elegir uno entre los dos filtros restantes, probablemente elegire
 
 El ancho de banda equivalente de ruido es el ancho de banda de un filtro ideal rectangular que daría el mismo valor de ruido cuadrático medio (la misma potencia normalizada de ruido) en la salida frente a un ruido blanco en la entrada.
 
-Se calcula haciendo la integral de la respuesta en frequencia del filtro al cuadrado entre 2 y despues se normaliza. 
+Para calcularlo primero se debe hacer la integral de la respuesta en frequencia del filtro al cuadrado entre 2. El resultado se dividirá entre el valor de la respuesta en frecuencia para f=0
 
 # 2.	Estudio del ISI sin ruido por medio de diagramas de ojo
 
@@ -178,7 +178,7 @@ Para ello generaremos una señal de entrada Su muestreada para $1.25 * Ts$ donde
 En la gráfica se aprecia que cuando introduces un instante de muestreo erróneo, la efectividad de los filtros disminuye. Esto se muestra especialmente presente para los filtros con α=0 y α=0.5, llegando hasta el punto de tener una BER superior al filtro de ISI para la misma SNR. Además, el filtro de α=1 sigue siendo el más preciso
 ,a pesar de perder rendimiento respecto a la gráfica anterior.
 
-Probamos ahora a introducir otro instante de muestreo erróneo: $1.25 * Ts$ Este instante coincidirá con el muestreo usado para el diseño de filtro con ISI.
+Probamos ahora a introducir otro instante de muestreo erróneo: $1.5 * Ts$ Este instante coincidirá con el muestreo usado para el diseño de filtro con ISI.
 
 !["Relación BER-SNR para los 4 filtros cuando el muestro se hace en 1.5*Ts"](Practica3/../images/10_snr_ber_filtros_1_5_Ts.jpg "Relación BER-SNR para los 4 filtros")
 
