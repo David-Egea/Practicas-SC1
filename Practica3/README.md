@@ -1,5 +1,5 @@
 Sistemas de Comunicación I
-# PRÁCTICA 2 - Detección Digital en Banda Base
+# PRÁCTICA 3 - Interferencia entre Símbolos
 
 Autores:
 * *David Cocero Quintanilla*  
@@ -13,34 +13,41 @@ En este apartado se analiza el comportamiento de cuatro filtros paso bajo difere
 
 ### **1. Comente la bondad relativa de los cuatro filtros para la transmisión en banda base en función de los criterios que estime conveniente.**
 
-La respuesta impulsional de todos y cada uno de los filtros puede expresarse como un función de seno cardinal o *sinc*:
+La respuesta impulsional de los filtros puede expresarse como una función de seno cardinal o *sinc*:
 
 $sinc(x)=\frac {sin(\pi*x)}{\pi x}$
 
-La propiedad principal de esta expresión matemática es que la función toma valor cero en los instantes $n*T$, siendo *n* es un número entero y *T* el período. 
+La propiedad principal de esta expresión matemática es que la función toma valor cero en los instantes $n*T$, siendo *n* es un número entero y *T* el período de la señal. 
 
 !["Respuesta impulsional 4 filtros"](Practica3/../images/1_1_resp_imp_filtros.jpg "Respuesta impulsional de los 4 filtros")
 
-La primera observación que se extrae de la gráfica anterior es que cuanto mayor es el valor de **α** de un filtro, mayor es también la velocidad a la que decaen las colas de su respuesta impulsional. Esto queda demostrado en el caso del filtro con α=1 (filtro de coseno alzado), cuyas colas son de menor magnitud. 
+La primera observación que se extrae de la gráfica anterior es que a mayor factor de *roll-off* (α) de un filtro, mayor es la velocidad a la que decaen las colas de su respuesta impulsional. Esto queda demostrado en el filtro de α=1 (filtro de coseno alzado), cuyas colas son de una magnitud significativamente inferior a las del resto de filtros. 
 
-Por otro lado, es posible determinar si un filtro causa ISI o no en base de su respuesta impulsional, identificando si su función asociada vale cero en todos los puntos k*T, siendo *k* números enteros. En caso de un filtro no tome un valor nulo en alguno de estos instantes mencionados, es posible afirmar que este producirá distorsión. 
+Por otro lado, es posible determinar si un filtro posee ISI en base a su respuesta impulsional, identificando si su función asociada toma valor cero en todos los puntos k*T, para cualquier entero *k*. Debido a esto, en caso de que un filtro no tome un valor nulo en alguno de estos instantes, es razonable afirmar que está ocurriendo distorsión. 
 
 !["Respuesta f 4 filtros"](Practica3/../images/1_1_resp_frec_filtros.jpg "Respuesta en frecuencia de los 4 filtros")
 
-En el caso de la respuesta en frecuencia, se observa como los cuatro filtros poseen comportamientos muy diferentes entre sí. Analizando individualmente cada uno de los filtros, comenzando por la **banda de paso** de cada uno de ellos: 
-- Filtro α=0 (ideal): Posee una banda de paso marcada por el rizado, producto de la inviabilidad de recrear un filtro perfectamente ideal en MATLAB (irrealizable). 
-- Filtro α=0.5: La banda de paso es estable 
-- Filtro α=1 (coseno alzado perfecto): El problema de este filtro es que la banda de paso es muy pequeña, pudiendo afectar a la señal de entrada
+Sobre la respuesta en frecuencia, se observa en la gráfica superior que cada uno de los cuatro filtros posee un comportamiento espectral claramente distinto del resto. A continuación, se han analizado individualmente cada uno de ellos, comentando los resultados obtenidos acerca de la banda de paso, transición y rechazo. 
+
+Comenzando por la **banda de paso**: 
+- Filtro α=0 (ideal): Posee una banda de paso marcada por el rizado, producto de la inviabilidad de recrear un filtro perfectamente ideal en MATLAB. 
+- Filtro α=0.5: Cuenta con una región de paso es estable, sin rizado aparente. 
+- Filtro α=1 (coseno alzado perfecto): Tiene una banda de paso estrecha que decae prontamente. Esto puede suponer un problema para el filtrado de señales con un ancho de banda más grande, ya que puede llegar a atenuar significativamente la región de mayor frecuencia de la señal. 
+- Filtro con ISI: Presenta una banda de paso amplia y con un rizado mínimo, que sin embargo, está marcada por la atenuación uniforme (0.65) que introduce el filtro. Esto se traduce en una pérdida significativa de la potencia espectral de la señal que se desea filtrar. 
 
 Sobre la **banda de transición**: 
 - Filtro α=0 (ideal): Como la pendiente de la banda de transición es la más pronunciada, este filtro posee la banda de rechazo más cercana en frecuencia. En un filtro completamente ideal (irrealizable), esta pendiende sería completamente vertical. La frecuecia límite de este filtro se encuentra en 0.4 Hz. 
 - Filtro α=0.5: La pendiente en este caso es menor que la del filtro ideal, pero sigue siendo mejor que la del α=1
 - Filtro α=1 (coseno alzado perfecto): A pesar de que esta banda empieza pronto, la pendiente es menos acusada
+- Filtro con ISI: Presenta una pendiente abrupta, de forma que el filtro alcanza rápidamente la banda de rechazo. 
 
 Sobre la **banda de rechazo**:
-- Filtro α=0 (ideal): La banda de rechazo se encuentra a partir de 0.6 Hz. 
-- Filtro α=0.5: la banda de #TODO: Terminar la explicacion
-- Filtro α=1 (coseno alzado perfecto): 
+- Filtro α=0 (ideal): Es el filtro con la banda de rechazo más temprana, ya que podría considerarse que comienza a partir de 0.6 Hz. 
+- Filtro α=0.5: Similar al caso anterior, solo que comienza a partir de 0.7 Hz.
+- Filtro α=1 (coseno alzado perfecto): Entorno a 0.8Hz.
+- Filtro con ISI: Muestra un comportamiento parecido al del filtro α=1 en esta región.
+
+En caso de tener que optar por uno de los filtros. 
 
 ### **2. Comente los resultados de las gráficas 1 y 2. A la vista de lo que está programado, ¿qué es el ancho de banda equivalente de ruido de los filtros?**
 
@@ -110,23 +117,31 @@ Llegamos finalmente al peor filtro, el que tiene ISI. Aquí el diagrama parece q
 
 # 3. Efecto del ruido en el diagrama de ojo  
 
+Esta parte de la práctica consiste en comprobar los efectos del ruido en los diagramas de ojo. 
+
 ### **7. Indique lo que se realiza en este apartado y los resultados que se obtienen. Realice una comparación entre código y resultados del apartado con los del apartado anterior.**
 
-En este apartado se introduce un determinado nivel de ruido a las señales, ruido blanco gaussiano. 
+Típicamente la presencia de ruido blanco gaussiano en la señal de entrada provoca el estrechamiento tanto vertical como horizontal en las aperturas de los diagramas de ojo. Por lo tanto, a mayor ruido, mayor es el impacto de este efecto. 
 
-*Mencionar que se estrecha tanto la apertura vertical como la horizontal por el efecto del ruido añadido.*
+En primer lugar se ha realizado la prueba para un nivel de SNR de 15dB, obteniéndose los siguientes resultados:
 
-Para un nivel de SNR de 15dB:
+!["Diagrama de ojo filtro con ruido de α=1 para SNR de 15dB"](Practica3/../images/7_ojo_alpha_1_snr_15.jpg "Diagrama de ojo filtro con ruido de α=1 para SNR de 15dB")  |  !["Diagrama de ojo filtro con ruido de α=0.5 para SNR de 15dB"](Practica3/../images/7_ojo_alpha_0_5_snr_15.jpg "Diagrama de ojo filtro con ruido de α=0.5 para SNR de 15dB") 
+---| ---
+!["Diagrama de ojo filtro con ruido de α=0 para SNR de 15dB"](Practica3/../images/7_ojo_alpha_0_snr_15.jpg "Diagrama de ojo filtro con ruido de α=0 para SNR de 15dB") |  !["Diagrama de ojo filtro con ruido con ISI para SNR de 15dB"](Practica3/../images/7_ojo_alpha_isi_snr_15.jpg "Diagrama de ojo filtro con ruido e ISI para SNR de 15dB")
 
-!["Diagrama de ojo filtro con ruido de α=1 para SNR de 15dB"](Practica3/../images/7_ojo_alpha_1_snr_15.jpg "Diagrama de ojo filtro con ruido de α=1 para SNR de 15dB")
+A primera vista, resalta la diferencia con respecto a los resultados obtenidos en el punto 6, ya que como era de esperar, se han reducido las aperturas horizontal y vertical de todos los diagramas de ojo. Además se observa como, por efecto de la presencia de ruido (gaussiano), se ha incrementado la dispersión entre trazos. 
 
-!["Diagrama de ojo filtro con ruido de α=0.5 para SNR de 15dB"](Practica3/../images/7_ojo_alpha_0_5_snr_15.jpg "Diagrama de ojo filtro con ruido de α=0.5 para SNR de 15dB")
+Del mismo modo, se ha realizado la simulación para una SNR de 10dB: 
 
-!["Diagrama de ojo filtro con ruido de α=0 para SNR de 15dB"](Practica3/../images/7_ojo_alpha_0_snr_15.jpg "Diagrama de ojo filtro con ruido de α=0 para SNR de 15dB"")
+!["Diagrama de ojo filtro con ruido de α=1 para SNR de 10dB"](Practica3/../images/7_ojo_alpha_1_snr_10.jpg "Diagrama de ojo filtro con ruido de α=1 para SNR de 10dB")  |  !["Diagrama de ojo filtro con ruido de α=0.5 para SNR de 10dB"](Practica3/../images/7_ojo_alpha_0_5_snr_10.jpg "Diagrama de ojo filtro con ruido de α=0.5 para SNR de 10dB") 
+---| ---
+!["Diagrama de ojo filtro con ruido de α=0 para SNR de 10dB"](Practica3/../images/7_ojo_alpha_0_snr_10.jpg "Diagrama de ojo filtro con ruido de α=0 para SNR de 10dB") |  !["Diagrama de ojo filtro con ruido con ISI para SNR de 10dB"](Practica3/../images/7_ojo_alpha_isi_snr_10.jpg "Diagrama de ojo filtro con ruido e ISI para SNR de 10dB")
 
-!["Diagrama de ojo filtro con ruido con ISI para SNR de 15dB"](Practica3/../images/7_ojo_alpha_isi_snr_15.jpg "Diagrama de ojo filtro con ruido e ISI para SNR de 15dB")
+Como estaba previsto, con una SNR menor los símbolos serán menos precisos y los trazos parecen más dispersos. Las conclusiones sobre las aperturas para distintos factores de *roll-off* siguen valiendo, pero en este caso se reducen las aperturas. Esto provocará que haya una mayor tasa de error debido al ruido.
 
-Comparar codigo generación 
+ Con respecto al código generador en MATLAB, vemos que para el anterior apartado simplemente se hacía la convolución de la señal de entrada con el filtro. Ahora utilizaremos la función *salida_filtro* que recibirá la señal de entrada, el filtro y el nivel de SNR deseado. En esta función se añadirá primero el ruido a la señal para después hacer la convolución con el filtro. En ambos casos se recurrirá a la función *diagrama_ojo* para la superposición de simbolos consecutivos y su representación.
+
+ A modo de apunte, cabe destacar que en contraste con los diagramas del anterior apartado, en este caso la cantidad de símbolos generados es mayor, con un total de 200 por diagrama(frente a los 40 de las anteriores gráficas). 
 
 ### **8. Razone la relación numérica que debe haber entre la relación señal ruido antes de los filtros con la de después de los filtros.**
 
@@ -135,13 +150,14 @@ En nuestro ejemplo en la entrada de los filtros tenemos nuestra señal más un c
 Por lo tanto, si la potencia de la señal se mantiene prácticamente estable pero el ruido disminuye considerablemente, la relación señal ruido después de los filtros será mayor.
 
 # 4. Efecto del ISI en la tasa de error 
-*En este apartado se calcula la tasa de error de transmisión que se obtiene cuando la señal que se introduce en los filtros está contaminada con ruido blanco y gausiano.*
+Este apartado se centra en el análisis de la tasa de error de transmisión obtenida en caso de que la señal de entradahaya sido contaminada con ruido blanco gaussiano.
 
 ### **9. Analice los resultados obtenidos en la figura, y relaciónelos con los resultados que apliquen de apartados anteriores.**
 
 Se aprecia que para una determinada SNR el filtro ISI tiene considerablemente más BER. Este resultado era de esperar ya que por supuesto habrá interferencias entre símbolos provocando que ciertos símbolos se identifiquen incorrectamente. Esto se puede relacionar con su diagrama de ojo donde deciamos que la apertura de amplitud era menor que en los otros casos, haciendolo más propenso a errores.
 
 Para los otros filtros, destacamos que cuanto mayor sea el alfa menor es el error de bit para una cierta SNR. Esta conclusión concuerda con lo visto en la series temporales del apartado 2, donde los filtros de menor alfa tenían más sobreimpulsos, lo que lleva a cometer más errores. 
+
 Además en los diagramas de ojo se veía como para los filtros de menor alfa la superposición de símbolos era más imprecisa, llevando a obtener una menor amplitud de tiempo.
 
 !["Relación BER-SNR para los 4 filtros"](Practica3/../images/9_snr_ber_filtros.jpg "Relación BER-SNR para los 4 filtros")
@@ -149,4 +165,13 @@ Además en los diagramas de ojo se veía como para los filtros de menor alfa la 
 
 # 5. Efecto del ISI en la tasa de error cuando además de ruido blanco hay error en la elección de los instantes de muestreo
 
-*Este apartado está vacío. Copie en él el código del apartado 4, y a continuación modifíquelo como crea conveniente para introducir errores en los instantes de muestreo. Ejecutar el código modificado y comentar los resultados obtenidos, en comparación con los del apartado anterior.*
+Los filtros han sido diseñados para un cierto tiempo de muestreo de la señal de entrada. En este apartado estudiaremos cómo afecta al BER una mala elección de los instantes de muestreo.
+
+Para ello generaremos una señal de entrada Su muestreada para $1.5 * Ts$ donde *Ts* es el tiempo de muestreo utilizado en el diseño de los filtros
+
+
+!["Relación BER-SNR para los 4 filtros cuando el muestro se hace en 1.25*Ts"](Practica3/../images/10_snr_ber_filtros_1_25_Ts.jpg "Relación BER-SNR para los 4 filtros")
+
+En 
+
+!["Relación BER-SNR para los 4 filtros cuando el muestro se hace en 1.5*Ts"](Practica3/../images/10_snr_ber_filtros_1_5_Ts.jpg "Relación BER-SNR para los 4 filtros")
