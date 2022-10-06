@@ -160,9 +160,9 @@ Este apartado se centra en el análisis de la tasa de error de transmisión obte
 
 Se aprecia que para una determinada SNR el filtro ISI tiene considerablemente más BER. Este resultado era de esperar ya que por supuesto habrá interferencias entre símbolos provocando que ciertos símbolos se identifiquen incorrectamente. Esto se puede relacionar con su diagrama de ojo donde deciamos que la apertura de amplitud era menor que en los otros casos, haciendolo más propenso a errores.
 
-Para los otros filtros, destacamos que cuanto mayor sea el alfa menor es el error de bit para una cierta SNR. Esta conclusión concuerda con lo visto en la series temporales del apartado 2, donde los filtros de menor alfa tenían más sobreimpulsos, lo que lleva a cometer más errores. 
+Para los otros filtros, destacamos que cuanto mayor sea el alfa menor es el error de bit para una cierta SNR. Esta conclusión concuerda con lo visto en la series temporales del apartado 2, donde los filtros de menor alfa tenían más sobreimpulsos, lo que lleva a cometer más errores. A
 
-Además en los diagramas de ojo se veía como para los filtros de menor alfa la superposición de símbolos era más imprecisa, llevando a obtener una menor amplitud de tiempo.
+Además en los diagramas de ojo se veía como para los filtros de menor alfa la superposición de símbolos era más imprecisa, llevando a obtener una menor amplitud de tiempo. Esto causa problemas de sincronización y un aumento de errores en presencia de ruido.
 
 !["Relación BER-SNR para los 4 filtros"](Practica3/../images/9_snr_ber_filtros.jpg "Relación BER-SNR para los 4 filtros")
 
@@ -171,11 +171,15 @@ Además en los diagramas de ojo se veía como para los filtros de menor alfa la 
 
 Los filtros han sido diseñados para un cierto tiempo de muestreo de la señal de entrada. En este apartado estudiaremos cómo afecta al BER una mala elección de los instantes de muestreo.
 
-Para ello generaremos una señal de entrada Su muestreada para $1.5 * Ts$ donde *Ts* es el tiempo de muestreo utilizado en el diseño de los filtros
-
+Para ello generaremos una señal de entrada Su muestreada para $1.25 * Ts$ donde *Ts* es el tiempo de muestreo utilizado en el diseño de los filtros
 
 !["Relación BER-SNR para los 4 filtros cuando el muestro se hace en 1.25*Ts"](Practica3/../images/10_snr_ber_filtros_1_25_Ts.jpg "Relación BER-SNR para los 4 filtros")
 
-En 
+En la gráfica se aprecia que cuando introduces un instante de muestreo erróneo, la efectividad de los filtros disminuye. Esto se muestra especialmente presente para los filtros con α=0 y α=0.5, llegando hasta el punto de tener una BER superior al filtro de ISI para la misma SNR. Además, el filtro de α=1 sigue siendo el más preciso
+,a pesar de perder rendimiento respecto a la gráfica anterior.
+
+Probamos ahora a introducir otro instante de muestreo erróneo: $1.25 * Ts$ Este instante coincidirá con el muestreo usado para el diseño de filtro con ISI.
 
 !["Relación BER-SNR para los 4 filtros cuando el muestro se hace en 1.5*Ts"](Practica3/../images/10_snr_ber_filtros_1_5_Ts.jpg "Relación BER-SNR para los 4 filtros")
+
+En este caso los filtros volverán a aumentar su BER, ya que se producirán errores de muestreo más graves. El único que mejora sus prestaciones es el filtro con ISI, que se convierte en el filtro con menor BER para un mismo nivel de SNR. Esto es el resultado de utilizar como instante de muestreo en la entrada, el mismo que se utilizó para generar este filtro. 
