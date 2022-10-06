@@ -42,12 +42,16 @@ Sobre la **banda de transición**:
 - Filtro con ISI: Presenta una pendiente abrupta, de forma que el filtro alcanza rápidamente la banda de rechazo. 
 
 Sobre la **banda de rechazo**:
-- Filtro α=0 (ideal): Es el filtro con la banda de rechazo más temprana, ya que podría considerarse que comienza a partir de 0.6 Hz. 
+- Filtro α=0 : Es el filtro con la banda de rechazo más temprana, ya que podría considerarse que comienza a partir de 0.6 Hz. 
 - Filtro α=0.5: Similar al caso anterior, solo que comienza a partir de 0.7 Hz.
 - Filtro α=1 (coseno alzado perfecto): Entorno a 0.8Hz.
 - Filtro con ISI: Muestra un comportamiento parecido al del filtro α=1 en esta región.
 
-En caso de tener que optar por uno de los filtros. 
+Teniendo en cuenta estos resultados, descartaremos de primeras el filtro con ISI, ya que la banda de paso sale bastante atenuada. Además, como hemos comentado antes, en la respuesta temporal se aprecia como habrá interferencia entre simbolos ya que la función asociada no toma valor cero en los instantes k*T.
+
+Por otro lado,el filtro de α=0 también lo podemos descartar por su acusado rizado en la banda de paso. Además en la respuesta temporal las oscilaciones que aparecen a los lados son demasiado grandes, lo que puede acarrear problemas en la transmisión.
+
+Si hubiera que elegir uno entre los dos filtros restantes, probablemente elegiremos el de factor de *roll-off* de 0.5 ya que es un buen compromiso
 
 ### **2. Comente los resultados de las gráficas 1 y 2. A la vista de lo que está programado, ¿qué es el ancho de banda equivalente de ruido de los filtros?**
 
@@ -71,7 +75,7 @@ Con respecto al resto de filtros, el efecto de la sobretensión se manifiesta cl
 
 !["Figura 4: Respuesta temporal retardada de los 4 filtros"](Practica3/../images/3_figura_4.jpg "Respuesta temporal retardada de los 4 filtros")
 
-En la Figura 5, se puede ver con mayor claridad el comportamiento analizado, al haber eliminado el retardo introducido por el filtro al inicio y al final de la secuencia. Además se muestra en la figura el vector de entrada utilizado. #Coment: comparacion con las muestras...
+En la Figura 5, se puede ver con mayor claridad el comportamiento analizado, al haber eliminado el retardo introducido por el filtro al inicio y al final de la secuencia. Además se muestra en la figura el vector de entrada utilizado solapado con la respuesta impulsional. De esta forma podemos identificar la respuesta de los filtros para cada simbolo de entrada.
 
 !["Figura 5: Respuesta temporal ajustada de los 4 filtros"](Practica3/../images/3_figura_5.jpg "Respuesta temporal ajustada de los 4 filtros")
 
