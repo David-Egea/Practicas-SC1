@@ -67,7 +67,7 @@ En la primera Figura 3 se observa un vector de muestras generadas aleatoriamente
 
 !["Figura 3: Vector de muestras eleatorias"](Practica3/../images/3_figura_3.jpg "Vector de muestras eleatorias")
 
-La Figura 4 muestra la salida de los cuatro filtros al vector de muestras de la anterior figura. Se puede comprobar como, por efecto de la convolución, los primeros valores reflejados se encuentran retardos 50 muestras (la mitad de longitud del filtro). 
+La Figura 4 muestra la salida de los cuatro filtros al vector de muestras de la anterior figura. Se puede comprobar como, por efecto de la convolución, los primeros valores reflejados se encuentran retardados 50 muestras (la mitad de longitud del filtro). También habrá se añadirán 50 muestras al final.
 
 Cuando se produce un único valor, es decir, no se transmite el mismo valor de forma consecutiva durante varias muestras, el filtro de ISI reacciona con un sobreimpulso a dicho valor, superando la amplitud del pulso original introducido. En caso de que sean varias las muestras del mismo valor transmitidas consecutivamente, el filtro de ISI reacciona de forma opuesta. Este efecto contrario se traduce en valores de salida significativamente inferiores a los valores de entrada.  
 
@@ -158,9 +158,9 @@ Este apartado se centra en el análisis de la tasa de error de transmisión obte
 
 ### **9. Analice los resultados obtenidos en la figura, y relaciónelos con los resultados que apliquen de apartados anteriores.**
 
-Se aprecia que para una determinada SNR el filtro ISI tiene considerablemente más BER. Este resultado era de esperar ya que por supuesto habrá interferencias entre símbolos provocando que ciertos símbolos se identifiquen incorrectamente. Esto se puede relacionar con su diagrama de ojo donde deciamos que la apertura de amplitud era menor que en los otros casos, haciendolo más propenso a errores.
+Se aprecia que para una determinada SNR el filtro ISI tiene considerablemente más BER. Este resultado era de esperar ya que por supuesto habrá interferencias entre símbolos provocando que ciertos símbolos se identifiquen incorrectamente. Esto se puede relacionar con su diagrama de ojo donde deciamos que la apertura de amplitud era menor que en los otros casos, haciéndolo más propenso a errores.
 
-Para los otros filtros, destacamos que cuanto mayor sea el alfa menor es el error de bit para una cierta SNR. Esta conclusión concuerda con lo visto en la series temporales del apartado 2, donde los filtros de menor alfa tenían más sobreimpulsos, lo que lleva a cometer más errores. A
+Para los otros filtros, destacamos que cuanto mayor sea el alfa menor es el error de bit para una cierta SNR. Esta conclusión concuerda con lo visto en la series temporales del apartado 2, donde los filtros de menor alfa tenían más sobreimpulsos, lo que lleva a cometer más errores. 
 
 Además en los diagramas de ojo se veía como para los filtros de menor alfa la superposición de símbolos era más imprecisa, llevando a obtener una menor amplitud de tiempo. Esto causa problemas de sincronización y un aumento de errores en presencia de ruido.
 
@@ -178,7 +178,7 @@ Para ello generaremos una señal de entrada Su muestreada para $1.25 * Ts$ donde
 En la gráfica se aprecia que cuando introduces un instante de muestreo erróneo, la efectividad de los filtros disminuye. Esto se muestra especialmente presente para los filtros con α=0 y α=0.5, llegando hasta el punto de tener una BER superior al filtro de ISI para la misma SNR. Además, el filtro de α=1 sigue siendo el más preciso
 ,a pesar de perder rendimiento respecto a la gráfica anterior.
 
-Probamos ahora a introducir otro instante de muestreo erróneo: $1.5 * Ts$ Este instante coincidirá con el muestreo usado para el diseño de filtro con ISI.
+Probamos ahora a introducir otro instante de muestreo erróneo: $1.5 * Ts$ . Este instante coincidirá con el muestreo usado para el diseño de filtro con ISI.
 
 !["Relación BER-SNR para los 4 filtros cuando el muestro se hace en 1.5*Ts"](Practica3/../images/10_snr_ber_filtros_1_5_Ts.jpg "Relación BER-SNR para los 4 filtros")
 
