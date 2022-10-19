@@ -142,12 +142,12 @@ legend('Teorica','Simulada');
 
 %% Ejercicio 2.5: influencia de la rotación de la fase o error de fase en recepción
 
-% Cambio de fase
-% ----- QPSK -------
 
 % Modulate symbols
-s_t = moduladorQPSK(txBits);
-
+s_tx = moduladorQPSK(txBits);
+% Cambio de fase
+% ----- QPSK -------
+s_t= s_tx.* exp(-1i*(pi/6));
 for iter_EbN0_dB = 1:length(EbN0_dB)
 
     % SNR
@@ -179,7 +179,8 @@ legend('Teorica','Simulada');
 
 % ----- DQPSK -------
 
-s_t = moduladorDQPSK(txBits);
+s_tx = moduladorDQPSK(txBits);
+s_t= s_tx.* exp(-1i*(pi/6));
 for iter_EbN0_dB = 1:length(EbN0_dB)
 
     % SNR
@@ -209,3 +210,82 @@ grid minor;
 title("Comparación BER Teórica y Simulada DQPSK");
 legend('Teorica','Simulada');
 
+%% 3.	Modulación Digital en Amplitud y Cuadratura, n-QAM y Amplitude Phase Shift Keying, APSK
+% Ejercicio 3.1: : curvas de BER frente a EbNo_dB para QAM y APSK
+
+% 4-QAM
+[BER,BERTheo]=BER_m_ary_QAM(4,EbN0_dB);
+
+figure;
+semilogy(EbN0_dB,BERTheo,'-*', "lineWidth",2);
+hold on;
+semilogy(EbN0_dB,BER,"-o", "lineWidth",2);
+xlabel('SNR [dB]');
+ylabel('BER');
+grid minor;
+title("Comparación BER Teórica y Simulada 4-QAM");
+legend('Teorica','Simulada');
+
+% 16-QAM
+[BER,BERTheo]=BER_m_ary_QAM(16,EbN0_dB);
+
+figure;
+semilogy(EbN0_dB,BERTheo,'-*', "lineWidth",2);
+hold on;
+semilogy(EbN0_dB,BER,"-o", "lineWidth",2);
+xlabel('SNR [dB]');
+ylabel('BER');
+grid minor;
+title("Comparación BER Teórica y Simulada 16-QAM");
+legend('Teorica','Simulada');
+% 64-QAM
+[BER,BERTheo]=BER_m_ary_QAM(64,EbN0_dB);
+
+figure;
+semilogy(EbN0_dB,BERTheo,'-*', "lineWidth",2);
+hold on;
+semilogy(EbN0_dB,BER,"-o", "lineWidth",2);
+xlabel('SNR [dB]');
+ylabel('BER');
+grid minor;
+title("Comparación BER Teórica y Simulada 64-QAM");
+legend('Teorica','Simulada');
+% 256-QAM
+[BER,BERTheo]=BER_m_ary_QAM(256,EbN0_dB);
+
+figure;
+semilogy(EbN0_dB,BERTheo,'-*', "lineWidth",2);
+hold on;
+semilogy(EbN0_dB,BER,"-o", "lineWidth",2);
+xlabel('SNR [dB]');
+ylabel('BER');
+grid minor;
+title("Comparación BER Teórica y Simulada 256-QAM");
+legend('Teorica','Simulada');
+
+
+% 16-APSK
+
+M=[4 12];
+R=[1 2.5];
+[BER]=BER_APSK(M,R,EbN0_dB);
+
+figure;
+semilogy(EbN0_dB,BER,"-o", "lineWidth",2);
+xlabel('SNR [dB]');
+ylabel('BER');
+grid minor;
+title("BER Simulada 16-APSK");
+
+% 32-APSK
+
+M=[4 12 16];
+R=[1 2.5 4.3];
+[BER]=BER_APSK(M,R,EbN0_dB);
+
+figure;
+semilogy(EbN0_dB,BER,"-o", "lineWidth",2);
+xlabel('SNR [dB]');
+ylabel('BER');
+grid minor;
+title("BER Simulada 16-APSK");
