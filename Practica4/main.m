@@ -288,4 +288,4 @@ semilogy(EbN0_dB,BER,"-o", "lineWidth",2);
 xlabel('SNR [dB]');
 ylabel('BER');
 grid minor;
-title("BER Simulada 16-APSK");
+title("BER Simulada 32-APSK");
