@@ -21,6 +21,7 @@ s1 = moduladorQPSK(txBits);
 
 % Representación de los símbolos modulados QPSK
 scatterplot(s1);
+title("Modulación QPSK Ideal");
 
 %% Ejercicio 2.2 : Modulación QPSK con ruido
 
@@ -175,6 +176,7 @@ xlabel('SNR [dB]');
 ylabel('BER');
 grid minor;
 title("Comparación BER Teórica y Simulada QPSK");
+subtitle("Desfase de 30º");
 legend('Teorica','Simulada');
 
 % ----- DQPSK -------
@@ -208,6 +210,7 @@ xlabel('SNR [dB]');
 ylabel('BER');
 grid minor;
 title("Comparación BER Teórica y Simulada DQPSK");
+subtitle("Desfase de 30º");
 legend('Teorica','Simulada');
 
 %% 3.	Modulación Digital en Amplitud y Cuadratura, n-QAM y Amplitude Phase Shift Keying, APSK
@@ -263,29 +266,20 @@ grid minor;
 title("Comparación BER Teórica y Simulada 256-QAM");
 legend('Teorica','Simulada');
 
-
+figure;
 % 16-APSK
-
 M=[4 12];
 R=[1 2.5];
 [BER]=BER_APSK(M,R,EbN0_dB);
-
-figure;
 semilogy(EbN0_dB,BER,"-o", "lineWidth",2);
-xlabel('SNR [dB]');
-ylabel('BER');
-grid minor;
-title("BER Simulada 16-APSK");
-
+hold on;
 % 32-APSK
-
 M=[4 12 16];
 R=[1 2.5 4.3];
 [BER]=BER_APSK(M,R,EbN0_dB);
-
-figure;
 semilogy(EbN0_dB,BER,"-o", "lineWidth",2);
 xlabel('SNR [dB]');
 ylabel('BER');
 grid minor;
-title("BER Simulada 32-APSK");
+title('Comparacion BER Simulada 16-APSK y 32-APSK');
+legend("BER Simulada 16-APSK","BER Simulada 32-APSK");
