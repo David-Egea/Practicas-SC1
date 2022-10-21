@@ -21,7 +21,6 @@ s1 = moduladorQPSK(txBits);
 
 % Representación de los símbolos modulados QPSK
 scatterplot(s1);
-title("Modulación QPSK Ideal");
 
 %% Ejercicio 2.2 : Modulación QPSK con ruido
 
@@ -53,6 +52,8 @@ close all;
 rxBits = demoduladorQPSK(s1);
 
 [number, ber] = biterr(txBits,rxBits);
+disp("Secuencia de bits enviados: "+ num2str(txBits))
+disp("Secuencia de bits recibidos: "+ num2str(rxBits))
 disp("BER QPSK: " + num2str(ber));
 
 % Demodulación
@@ -60,12 +61,14 @@ s1_dqpsk = moduladorDQPSK(txBits);
 rxBits = demoduladorDQPSK(s1_dqpsk);
 
 [number, ber] = biterr(txBits,rxBits);
+disp("Secuencia de bits enviados: "+ num2str(txBits))
+disp("Secuencia de bits recibidos: "+ num2str(rxBits))
 disp("BER DQPSK: " + num2str(ber));
 
 %% Ejercicio 2.4:curvas de BER frente a EbN0_dB para QPSK y DQPSK
 
 M = 4; % Alfabeto de 4 símbolos de 2 bits cada uno
-EbN0_dB = -5:2:10; % Niveles de ruido
+EbN0_dB = -5:2:12; % Niveles de ruido
 k = log2(M); % Número de bits por símbolo
 
 Nsimb = 20000; % Número de símbolos
@@ -142,76 +145,45 @@ title("Comparación BER Teórica y Simulada DQPSK");
 legend('Teorica','Simulada');
 
 %% Ejercicio 2.5: influencia de la rotación de la fase o error de fase en recepción
-
-
-% Modulate symbols
-s_tx = moduladorQPSK(txBits);
-% Cambio de fase
-% ----- QPSK -------
-s_t= s_tx.* exp(-1i*(pi/6));
-for iter_EbN0_dB = 1:length(EbN0_dB)
-
-    % SNR
-    SNR_dB = EbN0_dB(iter_EbN0_dB) + 10*log10(k); 
-
-    % ---- Canal ----
-    r_t = awgn(s_t,SNR_dB,'measured'); % Añadir ruido blanco
-
-    % ---- Recepción ----
-    rxBits = demoduladorQPSK(r_t);
-
-    [number,BERSim(iter_EbN0_dB)] = biterr(txBits,rxBits);
-end
- 
-% En QPSK la probabilidad teórica
-BERTheo = qfunc(sqrt(2*10.^(EbN0_dB/10)));
-BERTheo(BERTheo<1e-5) = NaN;
+[BERSim10,BERTheo]=calculateBER_QPSK_fase(txBits,10);
+BERSim20=calculateBER_QPSK_fase(txBits,20);
+BERSim30=calculateBER_QPSK_fase(txBits,30);
 
 % Representacion BER
 figure;
 semilogy(EbN0_dB,BERTheo,'-*', "lineWidth",2);
 hold on;
-semilogy(EbN0_dB,BERSim,"-o", "lineWidth",2);
+semilogy(EbN0_dB,BERSim10,"-o", "lineWidth",2);
+hold on;
+semilogy(EbN0_dB,BERSim20,"-o", "lineWidth",2);
+hold on;
+semilogy(EbN0_dB,BERSim30,"-o", "lineWidth",2);
 xlabel('SNR [dB]');
 ylabel('BER');
 grid minor;
-title("Comparación BER Teórica y Simulada QPSK");
-subtitle("Desfase de 30º");
-legend('Teorica','Simulada');
+title("Comparación BER QPSK para distintos cambios de fase");
+legend('BER teorica','Fase 10º','Fase 20º','Fase 30º');
 
 % ----- DQPSK -------
 
-s_tx = moduladorDQPSK(txBits);
-s_t= s_tx.* exp(-1i*(pi/6));
-for iter_EbN0_dB = 1:length(EbN0_dB)
-
-    % SNR
-    SNR_dB = EbN0_dB(iter_EbN0_dB) + 10*log10(k); 
-
-    % ---- Canal ----
-    r_t = awgn(s_t,SNR_dB,'measured'); % Añadir ruido
-
-    % ---- Recepción ----
-    rxBits = demoduladorDQPSK(r_t);
-
-    [number,BERSim(iter_EbN0_dB)] = biterr(txBits,rxBits) ;
-end
- 
-% En QPSK la probabilidad teórica
-BERTheo = 1.13*qfunc(sqrt(1.2*10.^(EbN0_dB/10)));
-BERTheo(BERTheo<1e-5) = NaN;
+[BERSim10,BERTheo10]=calculateBER_DQPSK_fase(txBits,10);
+BERSim20=calculateBER_DQPSK_fase(txBits,20);
+BERSim30=calculateBER_DQPSK_fase(txBits,30);
 
 % Representacion BER
 figure;
 semilogy(EbN0_dB,BERTheo,'-*', "lineWidth",2);
 hold on;
-semilogy(EbN0_dB,BERSim,"-o", "lineWidth",2);
+semilogy(EbN0_dB,BERSim10,"-o", "lineWidth",2);
+hold on;
+semilogy(EbN0_dB,BERSim20,"-o", "lineWidth",2);
+hold on;
+semilogy(EbN0_dB,BERSim30,"-o", "lineWidth",2);
 xlabel('SNR [dB]');
 ylabel('BER');
 grid minor;
-title("Comparación BER Teórica y Simulada DQPSK");
-subtitle("Desfase de 30º");
-legend('Teorica','Simulada');
+title("Comparación BER DQPSK para distintos cambios de fase");
+legend('BER teorica','Fase 10º','Fase 20º','Fase 30º');
 
 %% 3.	Modulación Digital en Amplitud y Cuadratura, n-QAM y Amplitude Phase Shift Keying, APSK
 % Ejercicio 3.1: : curvas de BER frente a EbNo_dB para QAM y APSK
@@ -266,20 +238,29 @@ grid minor;
 title("Comparación BER Teórica y Simulada 256-QAM");
 legend('Teorica','Simulada');
 
-figure;
+
 % 16-APSK
+
 M=[4 12];
 R=[1 2.5];
 [BER]=BER_APSK(M,R,EbN0_dB);
-semilogy(EbN0_dB,BER,"-o", "lineWidth",2);
-hold on;
-% 32-APSK
-M=[4 12 16];
-R=[1 2.5 4.3];
-[BER]=BER_APSK(M,R,EbN0_dB);
+
+figure;
 semilogy(EbN0_dB,BER,"-o", "lineWidth",2);
 xlabel('SNR [dB]');
 ylabel('BER');
 grid minor;
-title('Comparacion BER Simulada 16-APSK y 32-APSK');
-legend("BER Simulada 16-APSK","BER Simulada 32-APSK");
+title("BER Simulada 16-APSK");
+
+% 32-APSK
+
+M=[4 12 16];
+R=[1 2.5 4.3];
+[BER]=BER_APSK(M,R,EbN0_dB);
+
+figure;
+semilogy(EbN0_dB,BER,"-o", "lineWidth",2);
+xlabel('SNR [dB]');
+ylabel('BER');
+grid minor;
+title("BER Simulada 16-APSK");
