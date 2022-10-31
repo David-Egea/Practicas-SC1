@@ -49,6 +49,8 @@ title("Modulación QPSK SNR 15dB");
 
 close all;
 
+% ----------- BER 0 (sin ruido) ----------- 
+
 % Demodulación QPSK de los distintos símbolos QPSK (sin ruido)
 rxBits = demoduladorQPSK(s1);
 
@@ -69,7 +71,7 @@ disp("BER DQPSK: " + num2str(ber));
 %% Ejercicio 2.4:curvas de BER frente a EbN0_dB para QPSK y DQPSK
 
 M = 4; % Alfabeto de 4 símbolos de 2 bits cada uno
-EbN0_dB = -5:2:12; % Niveles de ruido
+EbN0_dB = -5:2:15; % Niveles de ruido
 k = log2(M); % Número de bits por símbolo
 
 Nsimb = 20000; % Número de símbolos
@@ -211,6 +213,8 @@ legend('DQPSK Teo.','DQPSK Sim. err. 10º','DQPSK Sim. err. 20º','DQPSK Sim. er
 %% 3.	Modulación Digital en Amplitud y Cuadratura, n-QAM y Amplitude Phase Shift Keying, APSK
 % Ejercicio 3.1: : curvas de BER frente a EbNo_dB para QAM y APSK
 
+EbN0_dB = -5:2:15; % Niveles de ruido
+
 % ------------------- n-QAM -------------------
 [BERSim4QAM,BERTheo4QAM] = BER_m_ary_QAM(4,EbN0_dB); % 4-QAM
 [BERSim16QAM,BERTheo16QAM] = BER_m_ary_QAM(16,EbN0_dB); % 16-QAM
@@ -256,16 +260,31 @@ title('Comparación BER 256-QAM');
 legend("BER Teo. 256-QAM","BER Sim. 256-QAM");
 sgtitle('Comparación BER para n-QAM');
 
+figure;
+semilogy(EbN0_dB,BERTheo4QAM,"-o", "lineWidth",2);
+hold on;
+semilogy(EbN0_dB,BERSim4QAM,"-*", "lineWidth",2);
+semilogy(EbN0_dB,BERTheo16QAM,"-o", "lineWidth",2);
+semilogy(EbN0_dB,BERSim16QAM,"-*", "lineWidth",2);
+semilogy(EbN0_dB,BERTheo64QAM,"-o", "lineWidth",2);
+semilogy(EbN0_dB,BERSim64QAM,"-*", "lineWidth",2);
+semilogy(EbN0_dB,BERTheo256QAM,"-o", "lineWidth",2);
+semilogy(EbN0_dB,BERSim256QAM,"-*", "lineWidth",2);
+xlabel('SNR [dB]');
+ylabel('BER');
+grid minor;
+title('Comparación BER n-QAM');
+legend("BER Teo. 4-QAM","BER Sim. 4-QAM","BER Teo. 16-QAM","BER Sim. 16-QAM","BER Teo. 64-QAM","BER Sim. 64-QAM","BER Teo. 256-QAM","BER Sim. 256-QAM");
 % ------------------- n-APSK -------------------
 % ----- 16-APSK -------
-M = [4 12];
-R = [1 2.5];
-[BER16APSK] = BER_APSK(M,R,EbN0_dB);
+M_16 = [4 12];
+R_16 = [1 2.5];
+[BER16APSK] = BER_APSK(M_16,R_16,EbN0_dB);
 
 % ----- 32-APSK -------
-M = [4 12 16];
-R = [1 2.5 4.3];
-[BER32APSK] = BER_APSK(M,R,EbN0_dB);
+M_32 = [4 12 16];
+R_32 = [1 2.5 4.3];
+[BER32APSK] = BER_APSK(M_32,R_32,EbN0_dB);
 
 figure;
 semilogy(EbN0_dB,BER16APSK,"-o", "lineWidth",2);
@@ -276,3 +295,43 @@ ylabel('BER');
 grid minor;
 title("Comparación BER para n-APSK");
 legend("BER Sim. 16-APSK","BER Sim. 32-APSK");
+
+figure;
+[BERSim32QAM,BERTheo32QAM] = BER_m_ary_QAM(32,EbN0_dB); % 32-QAM
+semilogy(EbN0_dB,BERSim16QAM,"-*", "lineWidth",2);
+hold on;
+semilogy(EbN0_dB,BERSim32QAM,"-*", "lineWidth",2);
+semilogy(EbN0_dB,BER16APSK,"-o", "lineWidth",2);
+semilogy(EbN0_dB,BER32APSK,"-o", "lineWidth",2);
+xlabel('SNR [dB]');
+ylabel('BER');
+grid minor;
+title("Comparación BER entre n-QAM y n-APSK");
+legend("BER Sim. 16-QAM","BER Sim. 32-QAM","BER Sim. 16-APSK","BER Sim. 32-APSK");
+
+% ----- 16-APSK -------
+R_16_mayor = [1 R_16(2)*2];
+R_16_menor = [1 R_16(2)/2];
+[BER16APSK_mayor] = BER_APSK(M_16,R_16_mayor,EbN0_dB);
+[BER16APSK_menor] = BER_APSK(M_16,R_16_menor,EbN0_dB);
+
+% ----- 32-APSK -------
+R_32_mayor = [1 R_32(2:3)*2];
+R_32_menor = [1 R_32(2:3)/2];
+[BER32APSK_mayor] = BER_APSK(M_32,R_32_mayor,EbN0_dB);
+[BER32APSK_menor] = BER_APSK(M_32,R_32_menor,EbN0_dB);
+
+figure;
+[BERSim32QAM,BERTheo32QAM] = BER_m_ary_QAM(32,EbN0_dB); % 32-QAM
+semilogy(EbN0_dB,BER16APSK,"-*", "lineWidth",2);
+hold on;
+semilogy(EbN0_dB,BER32APSK,"-*", "lineWidth",2);
+semilogy(EbN0_dB,BER16APSK_menor,"-o", "lineWidth",2);
+semilogy(EbN0_dB,BER32APSK_menor,"-o", "lineWidth",2);
+semilogy(EbN0_dB,BER16APSK_mayor,"-o", "lineWidth",2);
+semilogy(EbN0_dB,BER32APSK_mayor,"-o", "lineWidth",2);
+xlabel('SNR [dB]');
+ylabel('BER');
+grid minor;
+title("Comparación BER n-APSK para distintos radios");
+legend("BER Sim. 16-APSK","BER Sim. 32-APSK","BER Sim. 16-APSK (mitad)","BER Sim. 32-APSK (mitad)","BER Sim. 16-APSK (doble)","BER Sim. 32-APSK (doble)");

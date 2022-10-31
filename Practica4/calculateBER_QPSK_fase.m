@@ -1,6 +1,6 @@
 function [BERSim,BERTheo]=calculateBER_QPSK_fase(txBits,fase)
 s_tx = moduladorQPSK(txBits);
-EbN0_dB = -5:2:12; % Niveles de ruido
+EbN0_dB = -5:2:15; % Niveles de ruido
 M=4;
 k = log2(M);
 % Cambio de fase
