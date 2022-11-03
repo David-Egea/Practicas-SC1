@@ -1,5 +1,5 @@
 Sistemas de Comunicación I
-# PRÁCTICA 2 - Detección Digital en Banda Base
+# PRÁCTICA 3 - Interferencia entre Símbolos
 
 Autores:
 * *David Cocero Quintanilla*  
@@ -7,104 +7,179 @@ Autores:
 
 ---
 
-# 1. Introducción
+# 1. Respuesta impulsional y en frecuencia de varios filtros 
 
-El trabajo de esta segunda práctica se centra en ampliar el desarrollo realizado en la práctica anterior, incluyendo ahora nuevos elementos como el modulador o el detector. 
+En este apartado se analiza el comportamiento de cuatro filtros paso bajo diferentes.
 
-De esta forma, se pretende conseguir un sistema de comunicación similar al de la figura:
+### **1. Comente la bondad relativa de los cuatro filtros para la transmisión en banda base en función de los criterios que estime conveniente.**
 
-!["Esquema completo del sistema"](Practica2/../images/1_esquema.png)
+La respuesta impulsional de los filtros puede expresarse como una función de seno cardinal o *sinc*:
 
-Los archivos desarrollados en esta práctica:
-- `modulador.m`
-- `demodulador.m`
-- `detector.m`
-- `coeffs.m`
+sinc(x)= πx / sin(π∗x)
 
-Además utilizaremos el archivo `correlatorType.m`, desarrollado en la práctica 1.
+La propiedad principal de esta expresión matemática es que la función toma valor cero en los instantes $n*T$, siendo *n* es un número entero y *T* el período de la señal. 
 
-# 2. Modulador
+!["Respuesta impulsional 4 filtros"](Practica3/../images/1_1_resp_imp_filtros.jpg "Respuesta impulsional de los 4 filtros")
 
-El bloque correspondiente al demodulador digital en banda base se encarga de construir señales moduladas que varían en el tiempo en función de ciertos símbolos de entrada. Los símbolos de entrada se combinan linealmente con ciertas bases ortogonales para dar lugar a las señales moduladas.
+La primera observación que se extrae de la gráfica anterior es que a mayor factor de *roll-off* (α) de un filtro, mayor es la velocidad a la que decaen las colas de su respuesta impulsional. Esto queda demostrado en el filtro de α=1 (filtro de coseno alzado), cuyas colas son de una magnitud significativamente inferior a las del resto de filtros. 
 
-!["Señales moduladas a utilizar"](Practica2/../images/2_signals.png)
+Por otro lado, es posible determinar si un filtro posee ISI en base a su respuesta impulsional, identificando si su función asociada toma valor cero en todos los puntos k*T, para cualquier entero *k*. Debido a esto, en caso de que un filtro no tome un valor nulo en alguno de estos instantes, es razonable afirmar que está ocurriendo distorsión. 
 
-Para las bases ortonormales phi1 y phi2 los coeficientes de las bases son: 
+!["Respuesta f 4 filtros"](Practica3/../images/1_1_resp_frec_filtros.jpg "Respuesta en frecuencia de los 4 filtros")
 
-s1= $A\sqrt T$ [1 0]       
-s2= $A\sqrt T$ [0 1]  
-s3= $A\sqrt T$ [-1 0]  
-s4= $A\sqrt T$ [0 -1]  
+Sobre la respuesta en frecuencia, se observa en la gráfica superior que cada uno de los cuatro filtros posee un comportamiento espectral claramente distinto del resto. A continuación, se han analizado individualmente cada uno de ellos, comentando los resultados obtenidos acerca de la banda de paso, transición y rechazo. 
 
-## Ejercicio 2.1
+Comenzando por la **banda de paso**: 
+- Filtro α=0 (ideal): Posee una banda de paso marcada por el rizado, producto de la inviabilidad de recrear un filtro perfectamente ideal en MATLAB. 
+- Filtro α=0.5: Cuenta con una región de paso es estable, sin rizado aparente. 
+- Filtro α=1 (coseno alzado perfecto): Tiene una banda de paso estrecha que decae prontamente. Esto puede suponer un problema para el filtrado de señales con un ancho de banda más grande, ya que puede llegar a atenuar significativamente la región de mayor frecuencia de la señal. 
+- Filtro con ISI: Presenta una banda de paso amplia y con un rizado mínimo, que sin embargo, está marcada por la atenuación uniforme (0.65) que introduce el filtro. Esto se traduce en una pérdida significativa de la potencia espectral de la señal que se desea filtrar. 
 
-> La implentación del modulador utilizado en este ejercicio se encuentra en el archivo `modulador.m`  
+Sobre la **banda de transición**: 
+- Filtro α=0 (ideal): Como la pendiente de la banda de transición es la más pronunciada, este filtro posee la banda de rechazo más cercana en frecuencia. En un filtro completamente ideal (irrealizable), esta pendiende sería completamente vertical. La frecuecia límite de este filtro se encuentra en 0.4 Hz. 
+- Filtro α=0.5: La pendiente en este caso es menor que la del filtro ideal, pero sigue siendo mejor que la del α=1
+- Filtro α=1 (coseno alzado perfecto): A pesar de que esta banda empieza pronto, la pendiente es menos acusada
+- Filtro con ISI: Presenta una pendiente abrupta, de forma que el filtro alcanza rápidamente la banda de rechazo. 
 
-La función `modulador` genera un vector de muestras producto de la concatenación de los distintos símbolos del sistema {*s1,s2,s3,s4*}.
+Sobre la **banda de rechazo**:
+- Filtro α=0 : Es el filtro con la banda de rechazo más temprana, ya que podría considerarse que comienza a partir de 0.6 Hz. 
+- Filtro α=0.5: Similar al caso anterior, solo que comienza a partir de 0.7 Hz.
+- Filtro α=1 (coseno alzado perfecto): Entorno a 0.8Hz.
+- Filtro con ISI: Muestra un comportamiento parecido al del filtro α=1 en esta región.
 
-Para la selección de los símbolos se crea un vector pseudoaleatorio de ceros y unos, que se pasa como argumento al modulador. En el caso de la práctica como hay cuatro señales básicas ha sido necesario emplear dos bits para codificar cada símbolo. 
+Teniendo en cuenta estos resultados, descartaremos de primeras el filtro con ISI, ya que la banda de paso sale bastante atenuada. Además, como hemos comentado antes, en la respuesta temporal se aprecia como habrá interferencia entre simbolos ya que la función asociada no toma valor cero en los instantes k*T.
 
-En cuanto a la codificación, se ha optado por el uso de *códigos binarios reflejados* o *códigos Gray*. Esta técnica es especialmente interesante porque minimiza la probabilidad de error, ya que símbolos consecutivos difieren únicamente en un solo bit. 
+Por otro lado,el filtro de α=0 también lo podemos descartar por su acusado rizado en la banda de paso. Además en la respuesta temporal las oscilaciones que aparecen a los lados son demasiado grandes, lo que puede acarrear problemas en la transmisión.
 
-Los códigos asignados para cada símbolos son los siguientes:
+Si hubiera que elegir uno entre los dos filtros restantes, probablemente elegiremos el de factor de *roll-off* de 0.5 ya que es un buen compromiso
 
-    cods1 = [0 0] , cods2 = [0 1]  
-    cods3 = [1 1] , cods4 = [1 0]
+### **2. Comente los resultados de las gráficas 1 y 2. A la vista de lo que está programado, ¿qué es el ancho de banda equivalente de ruido de los filtros?**
 
-Por otra parte, para lograr el *array* de bits pseudoaleatorio de entrada se puede utilizar la siguiente expresión en MATLAB:
+El ancho de banda equivalente de ruido es el ancho de banda de un filtro ideal rectangular que daría el mismo valor de ruido cuadrático medio (la misma potencia normalizada de ruido) en la salida frente a un ruido blanco en la entrada.
 
-```MATLAB
-% Generación de un vector pseudoaleatorio (N=10)
-r = randi([0,1],1,2*N); 
-```
-El resultado de la modulación es:
+Para calcularlo primero se debe hacer la integral de la respuesta en frequencia del filtro al cuadrado entre 2. El resultado se dividirá entre el valor de la respuesta en frecuencia para f=0
 
-!["Secuencia de símbolos modulados"](Practica2/../images/2_1_simbolos_modulados.png "Secuencia de símbolos modulados")
+# 2.	Estudio del ISI sin ruido por medio de diagramas de ojo
 
-Se puede observar como el vector binario original se ha traducido correctamente en la señal de símbolos concatenados de salida. 
+### **3.	Comente las Figuras 3, 4 y 5.**
 
-# 3. Demodulador
+En la primera Figura 3 se observa un vector de muestras generadas aleatoriamente, que ha sido centrado en su propia secuencia. 
 
-El demodulador recibe como entrada la señal de los símbolos concatenados y devuelve los vectores de salida de los dos demoduladores muestrados en k·T, k=1...N, siendo N el número de símbolos.
+!["Figura 3: Vector de muestras eleatorias"](Practica3/../images/3_figura_3.jpg "Vector de muestras eleatorias")
 
-## Ejercicio 3.1
+La Figura 4 muestra la salida de los cuatro filtros al vector de muestras de la anterior figura. Se puede comprobar como, por efecto de la convolución, los primeros valores reflejados se encuentran retardados 50 muestras (la mitad de longitud del filtro). También habrá se añadirán 50 muestras al final.
 
-En nuestro diseño se irá recorriendo el vector de entrada y se llamará a la función `correlatorType.m` pasándole cada vez las 20 muestras correspondientes a un símbolo. Para cada uno de los dos vectores que devuelve la función cogeremos la última muestra. Con estos valores se llenarán dos vectores de longitud N, uno para cada demodulador, que es lo que devuelve el bloque.
+Cuando se produce un único valor, es decir, no se transmite el mismo valor de forma consecutiva durante varias muestras, el filtro de ISI reacciona con un sobreimpulso a dicho valor, superando la amplitud del pulso original introducido. En caso de que sean varias las muestras del mismo valor transmitidas consecutivamente, el filtro de ISI reacciona de forma opuesta. Este efecto contrario se traduce en valores de salida significativamente inferiores a los valores de entrada.  
 
-Para comprobar el funcionamiento de este módulo, se ha probado a introducir la señal de salida de la etapa anterior en el demodulador, de manera que el *output* esperado son los coeficientes de cada uno de los N símbolos transmitidos con respecto a las bases phi1 y phi2. 
+Con respecto al resto de filtros, el efecto de la sobretensión se manifiesta claramente cuando se envía el mismo símbolo de forma consecutiva, siendo más pronunciado cuanto menor sea el factor de *roll-off* del filtro.
 
-!["Coeficientes demodulados"](Practica2/../images/3_1_coeficientes_demodulados.png)
+!["Figura 4: Respuesta temporal retardada de los 4 filtros"](Practica3/../images/3_figura_4.jpg "Respuesta temporal retardada de los 4 filtros")
 
-Se observa como los coeficientes calculados coinciden con los valores esperados. Por  ejemplo, el primer par de coeficientes *0.1* para *phi1* y *0* para *phi2* sabiendo que el símbolo transitido fue *s1*, con código gray *00*.
+En la Figura 5, se puede ver con mayor claridad el comportamiento analizado, al haber eliminado el retardo introducido por el filtro al inicio y al final de la secuencia. Además se muestra en la figura el vector de entrada utilizado solapado con la respuesta impulsional. De esta forma podemos identificar la respuesta de los filtros para cada simbolo de entrada.
 
-# 4. Detector
+!["Figura 5: Respuesta temporal ajustada de los 4 filtros"](Practica3/../images/3_figura_5.jpg "Respuesta temporal ajustada de los 4 filtros")
 
-El detector recibe los vectores de salida del detector y, basándose en esos valores, decide qué símbolo es más probable que fuera transmitido.
 
-## Ejercicio 4.1
- 
-En este caso para cada simbolo que recibimos juntamos las salidas de los dos demoduladores en una tupla. Luego calculamos la distancia de esta tupla a los coeficientes de cada uno de los cuatro símbolos  (tomando la norma euclidea del vector diferencia). Finalmente, seleccionamos el símbolo que resulte en la menor distancia y lo añadimos a s_hat.
+### **4. Relacione los sobreimpulsos con el valor de α. A nivel cualitativo, ¿qué impacto puede tener el sobreimpulso sobre la BER, cuando en lo filtros entra no solamente señal, sino también ruido?**
 
-Este es el resultado de una de las pruebas realizadas. Se muestra la gráfica de la salida del detector y arriba aparece el vector de simbolos que se mando originalmente.
+En el caso que concierne, el efecto del sobreimpulso no supone un peligro ni tiene un afectación directa sobre el BER, al ser un sistema de dos posibles símbolos. En este caso, como la sobretensión añade más amplitud a la señal, es incluso menor probable que se cometa un identificación errónea de un símbolo. 
 
-!["Coeficientes detectados"](Practica2/../images/4_1_coeficientes_detectados.png)
+Sin embargo, para alfabetos mayores, es decir, con una mayor cantidad de símbolos, este efecto si tiene afectación negativa sobre el BER. Al aumentar el nivel de la señal, esta puede llegar a ser confundida como el símbolo siguiente, de modo que la tasa de error aumentará. 
 
-Se aprecia como los resultados son lógicos y el componente funciona a la perfección, al coincidir exactamente la secuencia detectada con la secuencia original introducida en el modulador al comienzo (ejercicio 2.1). 
+Por otro lado, la existencia de ruido agravará el error cometido por el filtro.
 
-# 5. Probabilidad de error
+### **5. ¿Cómo se generan los diagramas de ojo?**
 
-## Ejercicio 5.1
+Como es bien sabido, los diagramas de ojo se generan mediante la superposión de símbolos sucesivos ajustando temporalmente los intervalos entre los mismos. Típicamente esto se logra introduciendo retardos entre los distintos símbolos, de manera que coincidan todos en el mismo instante.  
 
-En la siguiente figura se representan 3 gráficas. La primera representa la probabilidad de error por simbolo obtenida con nuestro sistema de modulador, demodulador y detector. La siguiente también representa la probabilidad de error por simbolo pero en este caso teórica, siguiendo la fórmula
+Se trata en definitiva de una herramienta para analizar el comportamiento de enlaces de comunicaciones, ya que indican la forma, el nivel de ruido, los desfases y la distorsión de cada sistema. 
 
- $$ Pe = Q({ \sqrt {2*log_{2}M* EbNo}* sin({\pi \over m})})$$
+Algunos de los factores más relevantes de un diagrama de ojo son:  
 
- Por último tendremos el Bit Error Rate (BER), que es la probabilidad de error teórica pero en este caso por bit. Se calculará dividiendo la formula de antes entre $log_{2}M$ donde M es el numero de simbolos distintos, en este caso 4.
+* Apertura vertical (amplitud). Es la distancia entre ambos niveles lógicos (1 y-1). Es un indicador de la presencia de ruido o interferencia entre símbolos. 
+* Apertura horizontal (tiempo). Es la distancia horizontal entre las pendientes de apertura y cierre, en el nivel del cruce de amplitud (0). 
+* Pendiente. Indica la sensibilidad del sistema al error cometido en el restablecimiento del sincronismo en el caso de producirse un error en el instante de muestreo.
 
-!["Gráfica PE - SNR con Codificación Gary"](Practica2/../images/5_1_gray_pe_snr.png)
+### **6. Por inspección sobre las gráficas que se generan, indicar las aperturas de los diagramas de ojo en amplitud y tiempo.**
 
-Obviamente, con mayor nivel SNR, la probabilidad de error disminuirá en todos los casos. Si prestamos un poco de atención vemos como la teórica y la simulada están muy parejas,con el BER valiendo siempre la mitad de la teórica. Esta similitud se debe a que como se transmite un número grande de símbolos, el rendimiento de nuestro sistema en cuanto a errores será similar a lo calculado. 
+Para el caso del primer diagrama de ojo, se puede observar como al ser el filtro de α=1, los simbolos superpuestos son muy similares. Además en este caso apenas aparecen sobreimpulsos.Las apertura de amplitud definida anteriormente vale 2 mientras que la de tiempo vale 1.
 
-Además, obtenemos estos resultados porque hemos elegido el código Gray para codificar los simbolos (00 para S1, 01 para S2, 11 para S3 y 10 para S4) que minimiza el ratio de errores. Por ejemplo, si codificaramos los símbolos de otra forma (00 para S1, 01 para S2, 10 para S3 y 11 para S4) vemos en la siguiente gráfica que nuestra probabilidad de error de simbolo es ahora mayor que la teórica.
+!["Diagrama de ojo filtro de α=1"](Practica3/../images/5_ojo_alpha_1.jpg "Diagrama de ojo α=1")
 
-!["Gráfica PE - SNR"](Practica2/../images/5_1_pe_snr.png)
+Para α=0.5 vemos que la superposición es más imperfecta, los simbolos en muchos casos no coinciden. Mientras que la apertura vertical del ojo sigue valiendo 2, se puede apreciar como la apertura horizontal del ojo disminuye y pasa a valer entorno a 0.8 segundos.
+
+!["Diagrama de ojo filtro de α=0.5"](Practica3/../images/5_ojo_alpha_0_5.jpg "Diagrama de ojo filtro α=0.5")
+
+En el caso de α=0 la superposición de símbolos es incluso más imprecisa. Respecto a la apertura, la vertical se sigue manteniendo en 2, pero la horizontal se vuelve a reducir hasta unos 0.6 segundos
+
+!["Diagrama de ojo filtro de α=0"](Practica3/../images/5_ojo_alpha_0.jpg "Diagrama de ojo filtro α=0")
+
+Llegamos finalmente al peor filtro, el que tiene ISI. Aquí el diagrama parece que tiende a cerrarse verticalmente. Al haber distorsión, la apertura vertical será menor de 2, entorno 1.5. Esto significa que existirá interferencias entre símbolos que afectan si tenemos menos apertura vertical, la transmisión será menos resistente al ruido.
+
+!["Diagrama de ojo filtro ISI"](Practica3/../images/5_ojo_alpha_isi.jpg "Diagrama de ojo filtro ISI")
+
+
+# 3. Efecto del ruido en el diagrama de ojo  
+
+Esta parte de la práctica consiste en comprobar los efectos del ruido en los diagramas de ojo. 
+
+### **7. Indique lo que se realiza en este apartado y los resultados que se obtienen. Realice una comparación entre código y resultados del apartado con los del apartado anterior.**
+
+Típicamente la presencia de ruido blanco gaussiano en la señal de entrada provoca el estrechamiento tanto vertical como horizontal en las aperturas de los diagramas de ojo. Por lo tanto, a mayor ruido, mayor es el impacto de este efecto. 
+
+En primer lugar se ha realizado la prueba para un nivel de SNR de 15dB, obteniéndose los siguientes resultados:
+
+!["Diagrama de ojo filtro con ruido de α=1 para SNR de 15dB"](Practica3/../images/7_ojo_alpha_1_snr_15.jpg "Diagrama de ojo filtro con ruido de α=1 para SNR de 15dB")  |  !["Diagrama de ojo filtro con ruido de α=0.5 para SNR de 15dB"](Practica3/../images/7_ojo_alpha_0_5_snr_15.jpg "Diagrama de ojo filtro con ruido de α=0.5 para SNR de 15dB") 
+---| ---
+!["Diagrama de ojo filtro con ruido de α=0 para SNR de 15dB"](Practica3/../images/7_ojo_alpha_0_snr_15.jpg "Diagrama de ojo filtro con ruido de α=0 para SNR de 15dB") |  !["Diagrama de ojo filtro con ruido con ISI para SNR de 15dB"](Practica3/../images/7_ojo_alpha_isi_snr_15.jpg "Diagrama de ojo filtro con ruido e ISI para SNR de 15dB")
+
+A primera vista, resalta la diferencia con respecto a los resultados obtenidos en el punto 6, ya que como era de esperar, se han reducido las aperturas horizontal y vertical de todos los diagramas de ojo. Además se observa como, por efecto de la presencia de ruido (gaussiano), se ha incrementado la dispersión entre trazos. 
+
+Del mismo modo, se ha realizado la simulación para una SNR de 10dB: 
+
+!["Diagrama de ojo filtro con ruido de α=1 para SNR de 10dB"](Practica3/../images/7_ojo_alpha_1_snr_10.jpg "Diagrama de ojo filtro con ruido de α=1 para SNR de 10dB")  |  !["Diagrama de ojo filtro con ruido de α=0.5 para SNR de 10dB"](Practica3/../images/7_ojo_alpha_0_5_snr_10.jpg "Diagrama de ojo filtro con ruido de α=0.5 para SNR de 10dB") 
+---| ---
+!["Diagrama de ojo filtro con ruido de α=0 para SNR de 10dB"](Practica3/../images/7_ojo_alpha_0_snr_10.jpg "Diagrama de ojo filtro con ruido de α=0 para SNR de 10dB") |  !["Diagrama de ojo filtro con ruido con ISI para SNR de 10dB"](Practica3/../images/7_ojo_alpha_isi_snr_10.jpg "Diagrama de ojo filtro con ruido e ISI para SNR de 10dB")
+
+Como estaba previsto, con una SNR menor los símbolos serán menos precisos y los trazos parecen más dispersos. Las conclusiones sobre las aperturas para distintos factores de *roll-off* siguen valiendo, pero en este caso se reducen las aperturas. Esto provocará que haya una mayor tasa de error debido al ruido.
+
+ Con respecto al código generador en MATLAB, vemos que para el anterior apartado simplemente se hacía la convolución de la señal de entrada con el filtro. Ahora utilizaremos la función *salida_filtro* que recibirá la señal de entrada, el filtro y el nivel de SNR deseado. En esta función se añadirá primero el ruido a la señal para después hacer la convolución con el filtro. En ambos casos se recurrirá a la función *diagrama_ojo* para la superposición de simbolos consecutivos y su representación.
+
+ A modo de apunte, cabe destacar que en contraste con los diagramas del anterior apartado, en este caso la cantidad de símbolos generados es mayor, con un total de 200 por diagrama(frente a los 40 de las anteriores gráficas). 
+
+### **8. Razone la relación numérica que debe haber entre la relación señal ruido antes de los filtros con la de después de los filtros.**
+
+En nuestro ejemplo en la entrada de los filtros tenemos nuestra señal más un cierto nivel de ruido (SNR=15). Este ruido se define como ruido blanco gaussiano, con densidad de potencia espectral plana, por lo que los filtros paso bajo eliminarán la parte de este ruido situado en frecuencias altas. La señal por el contrario será en banda base, de forma que no debería perder un nivel significativo de potencia por el filtrado, aún habiendo cierta distorsión. 
+
+Por lo tanto, si la potencia de la señal se mantiene prácticamente estable pero el ruido disminuye considerablemente, la relación señal ruido después de los filtros será mayor.
+
+# 4. Efecto del ISI en la tasa de error 
+Este apartado se centra en el análisis de la tasa de error de transmisión obtenida en caso de que la señal de entradahaya sido contaminada con ruido blanco gaussiano.
+
+### **9. Analice los resultados obtenidos en la figura, y relaciónelos con los resultados que apliquen de apartados anteriores.**
+
+Se aprecia que para una determinada SNR el filtro ISI tiene considerablemente más BER. Este resultado era de esperar ya que por supuesto habrá interferencias entre símbolos provocando que ciertos símbolos se identifiquen incorrectamente. Esto se puede relacionar con su diagrama de ojo donde deciamos que la apertura de amplitud era menor que en los otros casos, haciéndolo más propenso a errores.
+
+Para los otros filtros, destacamos que cuanto mayor sea el alfa menor es el error de bit para una cierta SNR. Esta conclusión concuerda con lo visto en la series temporales del apartado 2, donde los filtros de menor alfa tenían más sobreimpulsos, lo que lleva a cometer más errores. 
+
+Además en los diagramas de ojo se veía como para los filtros de menor alfa la superposición de símbolos era más imprecisa, llevando a obtener una menor amplitud de tiempo. Esto causa problemas de sincronización y un aumento de errores en presencia de ruido.
+
+!["Relación BER-SNR para los 4 filtros"](Practica3/../images/9_snr_ber_filtros.jpg "Relación BER-SNR para los 4 filtros")
+
+
+# 5. Efecto del ISI en la tasa de error cuando además de ruido blanco hay error en la elección de los instantes de muestreo
+
+Los filtros han sido diseñados para un cierto tiempo de muestreo de la señal de entrada. En este apartado estudiaremos cómo afecta al BER una mala elección de los instantes de muestreo.
+
+Para ello generaremos una señal de entrada Su muestreada para 1.25∗Ts donde *Ts* es el tiempo de muestreo utilizado en el diseño de los filtros
+
+!["Relación BER-SNR para los 4 filtros cuando el muestro se hace en 1.25*Ts"](Practica3/../images/10_snr_ber_filtros_1_25_Ts.jpg "Relación BER-SNR para los 4 filtros")
+
+En la gráfica se aprecia que cuando introduces un instante de muestreo erróneo, la efectividad de los filtros disminuye. Esto se muestra especialmente presente para los filtros con α=0 y α=0.5, llegando hasta el punto de tener una BER superior al filtro de ISI para la misma SNR. Además, el filtro de α=1 sigue siendo el más preciso
+,a pesar de perder rendimiento respecto a la gráfica anterior.
+
+Probamos ahora a introducir otro instante de muestreo erróneo: 1.25∗Ts . Este instante coincidirá con el muestreo usado para el diseño de filtro con ISI.
+
+!["Relación BER-SNR para los 4 filtros cuando el muestro se hace en 1.5*Ts"](Practica3/../images/10_snr_ber_filtros_1_5_Ts.jpg "Relación BER-SNR para los 4 filtros")
+
+En este caso los filtros volverán a aumentar su BER, ya que se producirán errores de muestreo más graves. El único que mejora sus prestaciones es el filtro con ISI, que se convierte en el filtro con menor BER para un mismo nivel de SNR. Esto es el resultado de utilizar como instante de muestreo en la entrada, el mismo que se utilizó para generar este filtro. 
