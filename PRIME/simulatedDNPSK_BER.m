@@ -1,0 +1,33 @@
+function simBER = simulatedDNPSK_BER(SNR_dB,N,NFFT,Nofdm,N_pay)
+    % Función del bloque scrambler. Recibe:
+        % SNR_dB: Vector de valores de SNR
+        % N: Niveles de modulación 
+        % NFFT: Número de muestras de la NFFT
+        % Nofdm: Número de símbolos OFDM
+        % N_pay: Numero de portadoras OFDM
+    % Devuelve:
+        % simBer: Vector de BER simulada
+        
+    % Generacion de los bits
+    txBits = round(rand(1,N_pay*Nofdm*log2(N)));
+    % Aleatorización
+    randomizedBits = scrambler(txBits);
+    % Modulacion
+    x = modDNPSK(randomizedBits,N,NFFT,Nofdm);
+    % Inicializar el vector de BER
+    simBER = zeros(1,length(SNR_dB));
+    for i=1:length(SNR_dB)
+        % Valor SNR
+        SNR = SNR_dB(i);
+        % Se añade ruido para conseguir el SNR
+        fb = 10*log10((NFFT/2)/N_pay);
+        y = awgn(x,SNR-fb,'measured');
+        % Demodulación
+        rxBits = demodDNPSK(y,N,NFFT);
+        % Aleatorización
+        unrandomizedBits = scrambler(rxBits);
+        % Cáculo del error de bit
+        simBER(i) = sum(abs(unrandomizedBits-txBits))/length(txBits);
+    end
+end
+
