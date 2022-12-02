@@ -82,11 +82,8 @@ En la Figura 5, se puede ver con mayor claridad el comportamiento analizado, al 
 
 ### **4. Relacione los sobreimpulsos con el valor de α. A nivel cualitativo, ¿qué impacto puede tener el sobreimpulso sobre la BER, cuando en lo filtros entra no solamente señal, sino también ruido?**
 
-El efecto del sobreimpulso no supone un peligro ni tiene un afectación directa sobre el BER, al ser un sistema de dos posibles símbolos. En este caso, como la sobretensión añade más amplitud a la señal, es incluso menor probable que se cometa un identificación errónea de un símbolo. 
-
-Sin embargo, para alfabetos mayores, es decir, con una mayor cantidad de símbolos, este efecto si tiene afectación negativa sobre el BER. Al aumentar el nivel de la señal, esta puede llegar a ser confundida como el símbolo siguiente, de modo que la tasa de error aumentará. 
-
-Por otro lado, la existencia de ruido agravará el error cometido por el filtro.
+Analizando los diagramas se puede observar que cuanto menor es el factor de α, mayor es el sobreimpulso apreciado.
+Este sobreimpulso hace que aumente la distorsión del filtro y por tanto será más fácil confundir dos símbolos. Por lo tanto en presencia de ruido, el sobreimpulso causará un aumento de la tasa de error (BER)
 
 ### **5. ¿Cómo se generan los diagramas de ojo?**
 
