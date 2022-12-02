@@ -1,5 +1,5 @@
 Sistemas de Comunicación I
-# PRÁCTICA 3 - Interferencia entre Símbolos
+# PRÁCTICA 2 - Interferencia entre Símbolos
 
 Autores:
 * *David Cocero Quintanilla*  
@@ -13,11 +13,11 @@ En este apartado se analiza el comportamiento de cuatro filtros paso bajo difere
 
 ### **1. Comente la bondad relativa de los cuatro filtros para la transmisión en banda base en función de los criterios que estime conveniente.**
 
-La respuesta impulsional de los filtros puede expresarse como una función de seno cardinal o *sinc*:
+> La respuesta impulsional de los filtros puede expresarse como una función de seno cardinal o *sinc*:
+> sinc(x)= πx / sin(π∗x)
+> La propiedad principal de esta expresión matemática es que la función toma valor cero en los instantes n*T, siendo *n* es un número entero y *T* el período de la señal. 
 
-sinc(x)= πx / sin(π∗x)
-
-La propiedad principal de esta expresión matemática es que la función toma valor cero en los instantes $n*T$, siendo *n* es un número entero y *T* el período de la señal. 
+En primer lugar, se representan las distintas secuencias de símbolos unitarios. Estas señales son el equivalente de las deltas analógicas en un sistema digital. 
 
 !["Respuesta impulsional 4 filtros"](Practica3/../images/1_1_resp_imp_filtros.jpg "Respuesta impulsional de los 4 filtros")
 
@@ -82,7 +82,7 @@ En la Figura 5, se puede ver con mayor claridad el comportamiento analizado, al 
 
 ### **4. Relacione los sobreimpulsos con el valor de α. A nivel cualitativo, ¿qué impacto puede tener el sobreimpulso sobre la BER, cuando en lo filtros entra no solamente señal, sino también ruido?**
 
-En el caso que concierne, el efecto del sobreimpulso no supone un peligro ni tiene un afectación directa sobre el BER, al ser un sistema de dos posibles símbolos. En este caso, como la sobretensión añade más amplitud a la señal, es incluso menor probable que se cometa un identificación errónea de un símbolo. 
+El efecto del sobreimpulso no supone un peligro ni tiene un afectación directa sobre el BER, al ser un sistema de dos posibles símbolos. En este caso, como la sobretensión añade más amplitud a la señal, es incluso menor probable que se cometa un identificación errónea de un símbolo. 
 
 Sin embargo, para alfabetos mayores, es decir, con una mayor cantidad de símbolos, este efecto si tiene afectación negativa sobre el BER. Al aumentar el nivel de la señal, esta puede llegar a ser confundida como el símbolo siguiente, de modo que la tasa de error aumentará. 
 
