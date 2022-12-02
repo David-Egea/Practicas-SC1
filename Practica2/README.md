@@ -146,9 +146,7 @@ Como estaba previsto, con una SNR menor los símbolos serán menos precisos y lo
 
 ### **8. Razone la relación numérica que debe haber entre la relación señal ruido antes de los filtros con la de después de los filtros.**
 
-En nuestro ejemplo en la entrada de los filtros tenemos nuestra señal más un cierto nivel de ruido (SNR=15). Este ruido se define como ruido blanco gaussiano, con densidad de potencia espectral plana, por lo que los filtros paso bajo eliminarán la parte de este ruido situado en frecuencias altas. La señal por el contrario será en banda base, de forma que no debería perder un nivel significativo de potencia por el filtrado, aún habiendo cierta distorsión. 
-
-Por lo tanto, si la potencia de la señal se mantiene prácticamente estable pero el ruido disminuye considerablemente, la relación señal ruido después de los filtros será mayor.
+La relación señal a ruido antes y después del filtro es aproximadamente la misma. Por un lado el espectro de la señal que está a la entrada del filtro es plano en frecuencia al ser una señal de deltas. Además, el ruido presente es blanco gaussiano, por lo que su distribución también será plana. Debido a estos factores, el filtro tendrá el mismo efecto en la señal y en el ruido y se mantendrá la relación señal a ruido.
 
 # 4. Efecto del ISI en la tasa de error 
 Este apartado se centra en el análisis de la tasa de error de transmisión obtenida en caso de que la señal de entradahaya sido contaminada con ruido blanco gaussiano.
