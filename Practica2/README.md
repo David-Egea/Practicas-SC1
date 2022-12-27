@@ -17,7 +17,7 @@ En este apartado se analiza el comportamiento de cuatro filtros paso bajo difere
 > sinc(x)= πx / sin(π∗x)
 > La propiedad principal de esta expresión matemática es que la función toma valor cero en los instantes n*T, siendo *n* es un número entero y *T* el período de la señal. 
 
-En primer lugar, se representan las distintas secuencias de símbolos unitarios. Estas señales son el equivalente de las deltas analógicas en un sistema digital. 
+***En primer lugar, se representan las distintas secuencias de símbolos unitarios. Estas señales son el equivalente de las deltas analógicas en un sistema digital.***
 
 !["Respuesta impulsional 4 filtros"](Practica3/../images/1_1_resp_imp_filtros.jpg "Respuesta impulsional de los 4 filtros")
 
@@ -82,8 +82,7 @@ En la Figura 5, se puede ver con mayor claridad el comportamiento analizado, al 
 
 ### **4. Relacione los sobreimpulsos con el valor de α. A nivel cualitativo, ¿qué impacto puede tener el sobreimpulso sobre la BER, cuando en lo filtros entra no solamente señal, sino también ruido?**
 
-Analizando los diagramas se puede observar que cuanto menor es el factor de α, mayor es el sobreimpulso apreciado.
-Este sobreimpulso hace que aumente la distorsión del filtro y por tanto será más fácil confundir dos símbolos. Por lo tanto en presencia de ruido, el sobreimpulso causará un aumento de la tasa de error (BER)
+***Analizando los diagramas se puede observar que cuanto menor es el factor de α, mayor es el sobreimpulso apreciado. Este sobreimpulso hace que aumente la distorsión del filtro y por tanto será más fácil confundir dos símbolos. Por lo tanto en presencia de ruido, el sobreimpulso causará un aumento de la tasa de error (BER).***
 
 ### **5. ¿Cómo se generan los diagramas de ojo?**
 
@@ -146,7 +145,7 @@ Como estaba previsto, con una SNR menor los símbolos serán menos precisos y lo
 
 ### **8. Razone la relación numérica que debe haber entre la relación señal ruido antes de los filtros con la de después de los filtros.**
 
-La relación señal a ruido antes y después del filtro es aproximadamente la misma. Por un lado el espectro de la señal que está a la entrada del filtro es plano en frecuencia al ser una señal de deltas. Además, el ruido presente es blanco gaussiano, por lo que su distribución también será plana. Debido a estos factores, el filtro tendrá el mismo efecto en la señal y en el ruido y se mantendrá la relación señal a ruido.
+***La relación señal a ruido antes y después del filtro es aproximadamente la misma. Por un lado el espectro de la señal que está a la entrada del filtro es plano en frecuencia al ser una señal de deltas. Además, el ruido presente es blanco gaussiano, por lo que su distribución también será plana. Debido a estos factores, el filtro tendrá el mismo efecto en la señal y en el ruido y se mantendrá la relación señal a ruido.***
 
 # 4. Efecto del ISI en la tasa de error 
 Este apartado se centra en el análisis de la tasa de error de transmisión obtenida en caso de que la señal de entradahaya sido contaminada con ruido blanco gaussiano.
@@ -161,6 +160,7 @@ Además en los diagramas de ojo se veía como para los filtros de menor alfa la 
 
 !["Relación BER-SNR para los 4 filtros"](Practica3/../images/9_snr_ber_filtros.jpg "Relación BER-SNR para los 4 filtros")
 
+***De acuerdo a la represtación de las curvas de BER para los distintos filtros, para conseguir una tasa de error de bit de 10^-3 en el filtro α=1 es necesaria una SNR de 8.25 dB. Para el filtro α=0.5 la SNR necesaria es de unos 9 dB. Por lo tanto, la distancia entre ambas curvas de BER es de 0.5 dB, lo que implica que para conseguir la misma tasa de error de bit en ambos filtros es preciso aumentar la relación señal-ruido en dicha cantidad(0.5 dB) para el filtro α=0.5. Por otro lado, la diferencia de este último caso con respecto al filtro con ISI es de aproximadamente 4 dB, siendo la SNR necesaria de 13dB para alcanzar el nivel de BER comentado. Finalmente, para el caso del filtro α=0 la SNR necesaria para obtener BER=10^-3 es de 9.25 dB.*** 
 
 # 5. Efecto del ISI en la tasa de error cuando además de ruido blanco hay error en la elección de los instantes de muestreo
 
@@ -170,11 +170,18 @@ Para ello generaremos una señal de entrada Su muestreada para 1.25∗Ts donde *
 
 !["Relación BER-SNR para los 4 filtros cuando el muestro se hace en 1.25*Ts"](Practica3/../images/10_snr_ber_filtros_1_25_Ts.jpg "Relación BER-SNR para los 4 filtros")
 
-En la gráfica se aprecia que cuando introduces un instante de muestreo erróneo, la efectividad de los filtros disminuye. Esto se muestra especialmente presente para los filtros con α=0 y α=0.5, llegando hasta el punto de tener una BER superior al filtro de ISI para la misma SNR. Además, el filtro de α=1 sigue siendo el más preciso
-,a pesar de perder rendimiento respecto a la gráfica anterior.
+***En la gráfica se aprecia que cuando introduces un instante de muestreo erróneo, la efectividad de los filtros disminuye. El que peor parte se llevará será el filtro con factor de *roll-off* de 0, mientras que el filtro con ISI mejorará sus prestaciones respecto a los otros filtros.***
 
-Probamos ahora a introducir otro instante de muestreo erróneo: 1.25∗Ts . Este instante coincidirá con el muestreo usado para el diseño de filtro con ISI.
+***A nivel cuantitativo, para lograr una tasa de error de bit (BER) de 10^-4 en el filtro de α=1 se precisa una relación señal a ruido (SNR) de 12 dB. Para obtener el mismo nivel de BER en el filtro de α=0.5 es necesario una SNR de unos 17 dB. La separación entre las curvas de error de ambos filtros de aproximadamente unos 5 dB. Esto implica que para obtener la misma tasa de error en ambos filtros, es necesario aumentar la relación señal-ruido en 5 dB en el de α=0.5. En tercer lugar, se distingue perfectamente como el filtro con α=0 no alcanza BER=10^-4 en el rango de SNR representado. Atendiendo la tendencia de la curva de error se ha llegado a la conclusión de que se precisaría de una SNR muy elevada para alcanzar dicho umbral (prácticamente inviable).***
+
+***Por otro lado el filtro con ISI necesitará 20 dB de SNR para obtener la BER de 10^-4 que comentabamos anteriormente. En este caso la curva de BER se desplaza 3dB respecto al filtro de α=0.5, pero aún así sigue obteniendo mejores resultados que para el caso de α=0.***
+
+Probamos ahora a introducir otro instante de muestreo erróneo: 1.5∗Ts . Este instante coincidirá con el muestreo usado para el diseño de filtro con ISI.
 
 !["Relación BER-SNR para los 4 filtros cuando el muestro se hace en 1.5*Ts"](Practica3/../images/10_snr_ber_filtros_1_5_Ts.jpg "Relación BER-SNR para los 4 filtros")
 
-En este caso los filtros volverán a aumentar su BER, ya que se producirán errores de muestreo más graves. El único que mejora sus prestaciones es el filtro con ISI, que se convierte en el filtro con menor BER para un mismo nivel de SNR. Esto es el resultado de utilizar como instante de muestreo en la entrada, el mismo que se utilizó para generar este filtro. 
+En este caso los filtros volverán a aumentar su BER, ya que se producirán errores de muestreo más graves. El único que mejora sus prestaciones es el filtro con ISI, que se convierte en el filtro con menor BER para un mismo nivel de SNR. 
+
+***Por inspección, se puede determinar que los filtros con α=0 y α=0.5 tienen una pendiente de BER que desciende mucho más lentamente que las otras, no pudiendo obtenerse en ambos casos una BER inferior a 10^-2 para niveles de SNR de menos de 20 dB. Si consideramos el filtro de α=1, para conseguir una BER de 10^-3 es preciso una SNR de 13.9 dB. La SNR necesaria disminuye hasta 10.75 dB para el filtro de ISI, un desplazamiento de la curva de 3.15 dB.***
+
+***No es sorpresa que el filtro con menor BER sea el del ISI ya que en este caso hemos utilizado como instante de muestreo 1.5*Ts, el mismo que se utilizó para generar este filtro.**
