@@ -1,4 +1,4 @@
-function simBER = simulateDNPSK_BER(SNR_dB,N,NFFT,Nofdm,N_pay,nBits,h)
+function simBER = simulateDNPSK_BER(SNR_dB,N,NFFT,Nofdm,N_pay,nBits,h,use_ncp)
     % Función del bloque scrambler. Recibe:
         % SNR_dB: Vector de valores de SNR
         % N: Niveles de modulación 
@@ -6,7 +6,8 @@ function simBER = simulateDNPSK_BER(SNR_dB,N,NFFT,Nofdm,N_pay,nBits,h)
         % Nofdm: Número de símbolos OFDM
         % N_pay: Numero de portadoras OFDM
         % nBits: Número de bits a simular
-        % h: Filtro h[n] (si es [] no hay filtro) 
+        % h: Filtro h[n] (si es [] no hay filtro)
+        % use_ncp: Booleano que indica si se usa prefijo cíclico o no
     % Devuelve:
         % simBer: Vector de BER simulada
         
@@ -14,8 +15,10 @@ function simBER = simulateDNPSK_BER(SNR_dB,N,NFFT,Nofdm,N_pay,nBits,h)
     txBits = round(rand(1,nBits));
     % Aleatorización
     randomizedBits = scrambler(txBits);
+    % Longitud del prefijo cíclico
+    ncp = use_ncp*(length(h)-1);
     % Modulacion
-    x = modDNPSK(randomizedBits,N,NFFT,Nofdm);
+    x = modDNPSK(randomizedBits,N,NFFT,Nofdm,ncp);
     % Inicializar el vector de BER
     simBER = zeros(1,length(SNR_dB));
     for i=1:length(SNR_dB)
@@ -35,7 +38,7 @@ function simBER = simulateDNPSK_BER(SNR_dB,N,NFFT,Nofdm,N_pay,nBits,h)
             y = awgn(x,SNR-fb,'measured'); 
         end
         % Demodulación
-        rxBits = demodDNPSK(y,N,NFFT,Nofdm);
+        rxBits = demodDNPSK(y,N,NFFT,Nofdm,ncp);
         % Aleatorización
         unrandomizedBits = scrambler(rxBits);
         % Cáculo del error de bit

@@ -1,9 +1,10 @@
-function x = modDNPSK(txBits,N,NFFT,Nofdm)
+function x = modDNPSK(txBits,N,NFFT,Nofdm,ncp)
     % Modulación DNPSK de la señal. Recibe:
         % txBits: Vector bits de entrada
         % N: Niveles de modulación 
         % NFFT: Número de muestras de la NFFT
         % Nofdm: Número de símbolos OFDM
+        % ncp: Numero de muestras del prefijo cíclico
     % Devuelve el vector de bits modulados
     
     x = [];
@@ -43,13 +44,26 @@ function x = modDNPSK(txBits,N,NFFT,Nofdm)
         X = zeros(NFFT, Nofdm);
         % Se añade el piloto
         X(87,:) = piloto(1:Nofdm);
+        figure;
         %  Asignación de los símbolos moduladores al espectro positivo
         X(Nstart+1:Nend,:) = reshape(modBits,Nprtds,[]);
         %  Asignación de los símbolos moduladores en orden inverso y conjugados al espectro negativo
         X(NFFT/2+2:NFFT,:) = flipud(conj(X(2:NFFT/2,:)));
         % IFFT 
         m = ifft(X,NFFT,"symmetric")*NFFT;
-        % Generación del vector de muestras temporales reales x como resultado de la modulación OFDM.
-        x = [x reshape(m,1,[])];
+        % Se añade prefijo cíclico
+        if ncp 
+            % Inicializacion matriz para el prefijo
+            s = zeros(ncp+NFFT,Nofdm);
+            % Insertar las ultimas muestras como prefijo ciclico al principio
+            s(1:ncp,:) = m(end-ncp+1:end,:);
+            % Insertar el resto de la la señal
+            s(ncp+1:NFFT+ncp,:) = m; 
+            % Conversion a vector fila
+            x = [x reshape(s,1,[])];
+        else
+            % Generación del vector de muestras temporales reales x como resultado de la modulación OFDM.
+            x = [x reshape(m,1,[])];   
+        end
     end
 end
