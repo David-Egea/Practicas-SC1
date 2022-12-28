@@ -1,4 +1,4 @@
-function rxBits = demodDNPSK(x,N,NFFT,Nofdm,ncp,SimbRef,h)
+function rxBits = demodDNPSK(x,N,NFFT,Nofdm,ncp,SimbRef)
     % Demodulación DNPSK de la señal. Recibe:
         % x: Array de bits modulados
         % N: Niveles de modulación 
@@ -40,7 +40,7 @@ function rxBits = demodDNPSK(x,N,NFFT,Nofdm,ncp,SimbRef,h)
         Y = fft(xTrama,NFFT)/NFFT;
         if nargin > 5 
             % Ecualización
-            Y = equalizer(SimbRef,Y,h);
+            Y = equalizer(SimbRef(:,i),Y);
         end
         % Seleccionar señal
         Y = Y(Nstart+1:Nend,:)./exp(1i*fase);

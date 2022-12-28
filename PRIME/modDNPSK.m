@@ -8,6 +8,7 @@ function [x, SimbRef] = modDNPSK(txBits,N,NFFT,Nofdm,ncp)
     % Devuelve el vector de bits modulados y los símbolos de referencia
     % para la ecualización (opcional)
     
+    SimbRef = [];
     x = [];
     % Creación del modulador DPSK
     moduladorDNPSK = comm.DPSKModulator(N,0,"BitInput",true);
@@ -50,7 +51,8 @@ function [x, SimbRef] = modDNPSK(txBits,N,NFFT,Nofdm,ncp)
         X(Nstart+1:Nend,:) = reshape(modBits,Nprtds,[]);
         %  Asignación de los símbolos moduladores en orden inverso y conjugados al espectro negativo
         X(NFFT/2+2:NFFT,:) = flipud(conj(X(2:NFFT/2,:)));
-        SimbRef = X(:,1);
+        % Se añade el simbolo de referencia
+        SimbRef = [SimbRef X(:,1)];
         % IFFT 
         m = ifft(X,NFFT,"symmetric")*NFFT;
         % Se añade prefijo cíclico

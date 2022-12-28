@@ -39,7 +39,7 @@ function simBER = simulateDNPSK_BER(SNR_dB,N,NFFT,Nofdm,N_pay,nBits,h,use_ncp)
         end
         % Demodulación
         if use_ncp
-           rxBits = demodDNPSK(y,N,NFFT,Nofdm,ncp,SimbRef,h);
+           rxBits = demodDNPSK(y,N,NFFT,Nofdm,ncp,SimbRef);
         else
            rxBits = demodDNPSK(y,N,NFFT,Nofdm,ncp); 
         end
