@@ -1,11 +1,12 @@
-function x = modDNPSK(txBits,N,NFFT,Nofdm,ncp)
+function [x, SimbRef] = modDNPSK(txBits,N,NFFT,Nofdm,ncp)
     % Modulación DNPSK de la señal. Recibe:
         % txBits: Vector bits de entrada
         % N: Niveles de modulación 
         % NFFT: Número de muestras de la NFFT
         % Nofdm: Número de símbolos OFDM
         % ncp: Numero de muestras del prefijo cíclico
-    % Devuelve el vector de bits modulados
+    % Devuelve el vector de bits modulados y los símbolos de referencia
+    % para la ecualización (opcional)
     
     x = [];
     % Creación del modulador DPSK
@@ -49,6 +50,7 @@ function x = modDNPSK(txBits,N,NFFT,Nofdm,ncp)
         X(Nstart+1:Nend,:) = reshape(modBits,Nprtds,[]);
         %  Asignación de los símbolos moduladores en orden inverso y conjugados al espectro negativo
         X(NFFT/2+2:NFFT,:) = flipud(conj(X(2:NFFT/2,:)));
+        SimbRef = X(:,1);
         % IFFT 
         m = ifft(X,NFFT,"symmetric")*NFFT;
         % Se añade prefijo cíclico

@@ -18,7 +18,7 @@ function simBER = simulateDNPSK_BER(SNR_dB,N,NFFT,Nofdm,N_pay,nBits,h,use_ncp)
     % Longitud del prefijo cíclico
     ncp = use_ncp*(length(h)-1);
     % Modulacion
-    x = modDNPSK(randomizedBits,N,NFFT,Nofdm,ncp);
+    [x, SimbRef] = modDNPSK(randomizedBits,N,NFFT,Nofdm,ncp);
     % Inicializar el vector de BER
     simBER = zeros(1,length(SNR_dB));
     for i=1:length(SNR_dB)
@@ -38,7 +38,11 @@ function simBER = simulateDNPSK_BER(SNR_dB,N,NFFT,Nofdm,N_pay,nBits,h,use_ncp)
             y = awgn(x,SNR-fb,'measured'); 
         end
         % Demodulación
-        rxBits = demodDNPSK(y,N,NFFT,Nofdm,ncp);
+        if use_ncp
+           rxBits = demodDNPSK(y,N,NFFT,Nofdm,ncp,SimbRef,h);
+        else
+           rxBits = demodDNPSK(y,N,NFFT,Nofdm,ncp); 
+        end
         % Aleatorización
         unrandomizedBits = scrambler(rxBits);
         % Cáculo del error de bit
